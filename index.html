@@ -10,58 +10,46 @@
     <script src="noticias.js"></script>
 
     <style>
+        html { overflow-y: scroll; }
         :root { --azul: #002b5c; --ouro: #c5a059; --fundo: #f2f4f5; }
         body { background-color: var(--fundo); margin: 0; padding: 0; text-align: center; }
 
-        /* CORREÇÃO PARA CELULAR: Deixa de ser fixo em 1200px */
         .caixa-central { 
-            width: 100%; 
-            max-width: 1200px; 
-            display: inline-block; 
-            text-align: left; 
-            background-color: white;
+            width: 1200px; display: inline-block; text-align: left; 
+            vertical-align: top; background-color: white;
             box-shadow: 0 0 20px rgba(0,0,0,0.05);
-            overflow: hidden; /* Evita que itens vazem para o lado */
         }
 
-        /* Ajuste dos Banners para serem responsivos */
-        .topo-container { background-color: white; width: 100%; }
+        .topo-container { background-color: white; height: 300px; width: 1200px; }
         .topo-banner { 
-            width: 100%; 
-            height: auto; 
-            aspect-ratio: 1200 / 300; /* Mantém a proporção do banner */
-            background: url('img/banner-topo.png') no-repeat center; 
+            width: 1200px; height: 300px; background: url('img/banner-topo.png') no-repeat center; 
             background-size: contain;
         }
 
-        .navbar-gov { background-color: var(--azul); border-bottom: 4px solid var(--ouro); width: 100%; }
-        .menu-lista { display: flex; flex-wrap: wrap; list-style: none; margin: 0; padding: 0; }
-        .nav-link { color: white !important; font-weight: 600; padding: 12px 20px !important; text-transform: uppercase; font-size: 0.8rem; text-decoration: none; }
+        .navbar-gov { background-color: var(--azul); border-bottom: 4px solid var(--ouro); width: 1200px; }
+        .menu-lista { display: flex; list-style: none; margin: 0; padding: 0; }
+        .nav-link { color: white !important; font-weight: 600; padding: 15px 25px !important; text-transform: uppercase; font-size: 0.85rem; text-decoration: none; }
+        .nav-link:hover { background: rgba(255,255,255,0.1); }
 
         .banner-id { 
-            width: 100%; 
-            height: auto;
-            aspect-ratio: 1200 / 100;
-            background: url('img/banner-id.png') no-repeat center; 
-            background-size: 100% 100%;
+            width: 1200px; height: 100px; background: url('img/banner-id.png') no-repeat center; 
+            background-size: 100% 100%; margin-top: -1px;
         }
 
-        /* Estilo da Notícia da Expofeira na Home */
-        .secao-noticias-home { padding: 30px 15px; background-color: white; }
-        .titulo-home { color: var(--azul); font-weight: 800; margin-bottom: 25px; border-left: 5px solid var(--ouro); padding-left: 15px; }
+        /* SEÇÃO DE NOTÍCIAS (Destaque Principal agora) */
+        .secao-noticias-home { padding: 50px 40px; background-color: white; }
+        .titulo-home { color: var(--azul); font-weight: 800; margin-bottom: 30px; border-left: 5px solid var(--ouro); padding-left: 15px; }
         
-        .card-noticia-home { border: none; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .card-noticia-home { border: none; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); background: white; }
         .img-noticia-home { height: 250px; width: 100%; object-fit: cover; }
+        .btn-leia-mais { color: var(--azul); font-weight: 700; text-decoration: none; font-size: 0.95rem; }
+        .btn-leia-mais:hover { color: var(--ouro); }
 
-        .rodape-oficial { width: 100%; border-top: 5px solid var(--azul); background: white; }
-        .img-rodape { width: 100%; height: auto; display: block; object-fit: contain; }
-
-        /* Ajustes para telas bem pequenas (Celulares) */
-        @media (max-width: 768px) {
-            .nav-link { padding: 10px 15px !important; font-size: 0.75rem; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-            .img-noticia-home { height: 200px; }
-            .titulo-home { font-size: 1.2rem; }
+        .rodape-oficial {
+            width: 1200px; background-color: #ffffff;
+            border-top: 5px solid var(--azul); text-align: center;
         }
+        .img-rodape { width: 1200px; height: 150px; display: block; object-fit: contain; }
     </style>
 </head>
 <body>
@@ -74,6 +62,7 @@
                 <li><a class="nav-link" href="noticias.html">Notícias</a></li> 
                 <li><a class="nav-link" href="acervo.html">Acervo Moderno</a></li>
                 <li><a class="nav-link" href="acervo-vintage.html">Memorial Vintage</a></li>
+                <li style="margin-left: auto;"><a class="nav-link" href="#"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
 
@@ -81,20 +70,22 @@
 
         <div class="secao-noticias-home">
             <h4 class="titulo-home">DESTAQUES DO PORTAL</h4>
-            <div id="feedNoticias"></div>
-            <div class="text-center mt-4">
-                <a href="noticias.html" class="btn btn-outline-primary fw-bold px-4">VER TODAS AS NOTÍCIAS</a>
+            <div id="feedNoticias">
+                </div>
+            <div class="text-center mt-5">
+                <a href="noticias.html" class="btn btn-outline-primary fw-bold px-5 py-2">VER TODAS AS NOTÍCIAS</a>
             </div>
         </div>
 
         <footer class="rodape-oficial">
-            <img src="img/banner-governo-rodape.png" class="img-rodape">
+            <img src="img/banner-governo-rodape.png" alt="Governo" class="img-rodape">
         </footer>
     </div>
 
     <script>
+        // Lógica para mostrar a notícia da Expofeira na Home
         const feed = document.getElementById('feedNoticias');
-        // Puxa a notícia da Expofeira do seu noticias.js
+        
         feed.innerHTML = baseNoticias.map(n => `
             <div class="card card-noticia-home">
                 <div class="row g-0 align-items-center">
@@ -102,13 +93,11 @@
                         <img src="${n.imagens[0]}" class="img-fluid img-noticia-home" alt="Destaque">
                     </div>
                     <div class="col-md-7">
-                        <div class="card-body p-4">
-                            <small class="text-muted fw-bold"><i class="bi bi-calendar3"></i> ${n.data}</small>
-                            <h3 class="fw-bold mt-2" style="color:var(--azul)">${n.titulo}</h3>
-                            <p class="text-secondary mb-3">${n.resumo}</p>
-                            <a href="noticias.html" class="btn btn-link p-0 fw-bold text-decoration-none" style="color:var(--azul)">
-                                Ler notícia completa <i class="bi bi-arrow-right"></i>
-                            </a>
+                        <div class="card-body p-4 ps-5">
+                            <small class="text-muted fw-bold text-uppercase"><i class="bi bi-calendar3"></i> ${n.data}</small>
+                            <h2 class="card-title fw-bold mt-2 mb-3" style="color:var(--azul); font-size: 1.8rem;">${n.titulo}</h2>
+                            <p class="card-text text-secondary mb-4" style="font-size: 1.1rem; line-height: 1.6;">${n.resumo}</p>
+                            <a href="noticias.html" class="btn-leia-mais">Saiba mais sobre a exposição <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
