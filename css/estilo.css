@@ -1,0 +1,192 @@
+/* css/estilo.css - VERSÃO FINAL RESPONSIVA */
+
+/* --- VARIÁVEIS DE CORES --- */
+:root { 
+    --azul: #002b5c; 
+    --ouro: #c5a059; 
+    --verde: #29a771; 
+    --fundo: #f2f4f5; 
+}
+
+/* --- GERAL --- */
+html { overflow-y: scroll; }
+
+body { 
+    background-color: var(--fundo); 
+    margin: 0; padding: 0;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+    overflow-x: hidden;
+}
+
+/* --- ESTRUTURA PRINCIPAL --- */
+.caixa-central { 
+    width: 100%; 
+    max-width: 1200px; 
+    display: block;    
+    margin: 0 auto;    
+    text-align: left; 
+    vertical-align: top;
+    background-color: white;
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    min-height: 100vh;
+}
+
+/* --- TOPO E BANNERS --- */
+.topo-container { background-color: white; width: 100%; }
+
+.topo-banner { 
+    width: 100%; height: 300px; 
+    background: url('../img/banner-topo.png') no-repeat center; 
+    background-size: cover; 
+}
+
+.banner-id { 
+    width: 100%; height: 100px; 
+    background: url('../img/banner-id.png') no-repeat center; 
+    background-size: cover; 
+    margin-top: -1px;
+}
+
+/* --- MENU (Versão Desktop) --- */
+.navbar-gov { 
+    background-color: var(--azul); 
+    border-bottom: 4px solid var(--ouro); 
+    width: 100%;
+}
+
+.menu-lista { 
+    display: flex; 
+    list-style: none; 
+    margin: 0; padding: 0; 
+    flex-wrap: wrap; 
+    justify-content: flex-start; 
+}
+
+.nav-link { 
+    color: white !important; 
+    font-weight: 600; 
+    padding: 15px 25px !important; 
+    text-transform: uppercase; 
+    font-size: 0.85rem; 
+    text-decoration: none; 
+    display: block;
+    white-space: nowrap;
+    border-right: 1px solid rgba(255,255,255,0.05);
+}
+
+.nav-link:hover { background: rgba(255,255,255,0.1); }
+
+/* --- CONTEÚDO GERAL --- */
+.conteudo-principal, .conteudo-noticias { padding: 40px; }
+
+.titulo-pg, .titulo-secao { 
+    color: var(--azul); 
+    border-left: 6px solid var(--verde); 
+    padding-left: 15px; 
+    font-weight: 700; 
+    margin-bottom: 30px;
+}
+
+/* --- ACERVO --- */
+.grid-anos {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    background: #f8f9fa; padding: 25px; border-radius: 8px;
+    border: 1px solid #eee; margin-bottom: 40px;
+}
+.btn-ano { min-width: 65px; font-weight: bold; font-size: 0.85rem; margin-bottom: 5px; }
+
+.container-tabela {
+    border: 2px solid #6f42c1 !important; border-radius: 15px; 
+    background: white; padding: 30px;
+}
+.header-tabela {
+    background-color: var(--verde); color: white;
+    padding: 15px 25px; border-radius: 8px;
+    display: inline-flex; align-items: center; 
+    margin-bottom: 30px; width: 100%;
+}
+.mes-nav {
+    display: flex; justify-content: space-between;
+    border-bottom: 2px solid #eee; margin-bottom: 30px; 
+    padding-bottom: 10px; overflow-x: auto;
+}
+.mes-link {
+    text-decoration: none; color: var(--azul);
+    font-weight: 800; font-size: 0.95rem; padding: 5px 12px; cursor: pointer;
+}
+.mes-link.active { color: var(--verde); border-bottom: 4px solid var(--verde); }
+
+.table thead { background-color: var(--verde); color: white; }
+.btn-visualizar {
+    background-color: var(--verde); color: white;
+    border: none; border-radius: 50px; padding: 6px 30px;
+    text-decoration: none; display: inline-block;
+}
+
+/* --- NOTÍCIAS --- */
+img { max-width: 100%; height: auto; }
+.foto-principal { width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+.foto-secundaria { width: 100%; height: 170px; object-fit: cover; border-radius: 8px; }
+
+/* --- RODAPÉ --- */
+.rodape-oficial {
+    width: 100%; background-color: #ffffff;
+    border-top: 5px solid var(--azul); 
+    box-shadow: 0 -3px 10px rgba(0,0,0,0.03);
+    text-align: center; padding: 20px 0;
+}
+.img-rodape { max-width: 100%; height: auto; max-height: 150px; display: inline-block; }
+
+/* =========================================================
+   MEDIA QUERIES - CELULAR (A MÁGICA ACONTECE AQUI)
+   ========================================================= */
+@media (max-width: 768px) {
+    
+    /* 1. Topo compacto e sem cortar imagem */
+    .topo-banner { 
+        height: 120px; 
+        background-size: contain; 
+        background-position: center;
+        background-color: white; 
+    }
+    .banner-id { height: 60px; background-size: contain; }
+
+    /* 2. MENU EM GRADE (Compacto) */
+    .menu-lista { 
+        display: grid;             
+        grid-template-columns: 1fr 1fr; /* Divide em 2 colunas */
+        width: 100%; 
+    }
+    
+    .nav-link { 
+        text-align: center; 
+        border: 1px solid rgba(255,255,255,0.1); 
+        padding: 12px 5px; 
+        width: 100%;
+        font-size: 0.75rem; /* Fonte um pouco menor */
+        white-space: normal; 
+        height: 100%; 
+        display: flex; align-items: center; justify-content: center;
+    }
+
+    /* O último item (Buscar) ocupa a largura total embaixo */
+    .menu-lista li:last-child {
+        grid-column: span 2; 
+        background-color: rgba(0,0,0,0.15); /* Destaque sutil */
+    }
+
+    /* 3. Ajustes Gerais */
+    .caixa-central { box-shadow: none; }
+    .conteudo-principal, .conteudo-noticias { padding: 20px 15px; }
+    .table-responsive { overflow-x: auto; }
+    
+    /* 4. Fontes e Imagens */
+    h2 { font-size: 1.5rem; }
+    h4, h5 { font-size: 1.2rem; }
+    .foto-principal { height: auto; max-height: 250px; }
+    .foto-secundaria { height: auto; max-height: 120px; }
+    
+    .grid-anos { padding: 10px; gap: 5px; }
+    .btn-ano { min-width: 50px; font-size: 0.8rem; padding: 4px; }
+}

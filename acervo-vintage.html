@@ -4,150 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memorial Histórico - Imprensa Oficial AP</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
-    <script src="dados.js"></script>
+    <script src="js/dados.js"></script>
 
     <style>
-        html { overflow-y: scroll; }
+        /* CSS ESPECÍFICO VINTAGE - INTEGRADO PARA MANTER O TEMA */
         :root { 
-            --vinho: #3d2b1f; 
-            --verde-velho: #4e6b54; 
-            --papel: #f2e8d5; 
-            --borda: #c5b496;
-            --sepia-escuro: #5d4037; 
-            --azul-institucional: #002b5c; 
+            --vinho: #3d2b1f; --verde-velho: #4e6b54; 
+            --papel: #f2e8d5; --borda: #c5b496;
+            --sepia-escuro: #5d4037; --azul-institucional: #002b5c; 
         }
         
         body { 
-            background-color: #d7ccc8; 
-            margin: 0; text-align: center; 
+            background-color: #d7ccc8; margin: 0; text-align: center; 
             font-family: 'Georgia', serif; 
+            overflow-x: hidden;
         }
 
         .caixa-central { 
-            width: 1200px; 
-            display: inline-block; 
+            width: 100%; max-width: 1200px; 
+            display: block; margin: 0 auto;
             text-align: left; 
-            background-color: var(--papel); 
-            border: 1px solid var(--borda); 
+            background-color: var(--papel); border: 1px solid var(--borda); 
             box-shadow: 0 0 50px rgba(0,0,0,0.3); 
+            min-height: 100vh;
         }
         
         .espaco-banner-topo { 
             height: 350px; 
             background: url('img/banner-vintage-topo.png') no-repeat center; 
-            background-size: contain; 
+            background-size: cover; 
             border-bottom: 5px double var(--vinho); 
         }
         
-        .navbar-vintage { background-color: var(--vinho); }
+        .navbar-vintage { background-color: var(--vinho); padding: 10px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
         .nav-link-v { 
-            color: var(--papel) !important; 
-            font-weight: bold; 
-            padding: 15px 25px !important; 
-            text-transform: uppercase; 
-            font-size: 0.8rem; 
-            text-decoration: none;
-            display: inline-block;
+            color: var(--papel) !important; font-weight: bold; 
+            padding: 10px 20px; text-transform: uppercase; 
+            font-size: 0.9rem; text-decoration: none; 
+            border: 1px solid transparent; transition: 0.3s;
         }
-        .nav-link-v:hover { background: rgba(255,255,255,0.1); }
+        .nav-link-v:hover { border-color: var(--papel); background: rgba(255,255,255,0.05); }
         
-        .conteudo-principal { padding: 50px; }
+        .conteudo-principal { padding: 40px; }
         
         .grid-anos { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 8px; 
-            justify-content: center; 
-            background: rgba(0,0,0,0.05); 
-            padding: 30px; 
-            border: 1px solid var(--borda); 
-            margin-bottom: 40px; 
+            display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; 
+            background: rgba(61, 43, 31, 0.05); padding: 20px; 
+            border: 1px solid var(--borda); margin-bottom: 40px; 
         }
         
         .btn-ano-v { 
-            min-width: 65px; 
-            background: white; 
-            border: 1px solid var(--vinho); 
-            font-weight: bold; 
-            cursor: pointer; 
-            padding: 6px; 
-            font-size: 0.85rem; 
-            transition: 0.3s; 
+            min-width: 60px; background: white; border: 1px solid var(--vinho); 
+            font-weight: bold; cursor: pointer; padding: 8px; font-size: 0.9rem; 
+            transition: 0.3s; font-family: 'Georgia', serif;
         }
-        .btn-ano-v.active { background: var(--vinho); color: white; }
-        .btn-ano-v:hover { background: #eee; }
+        .btn-ano-v.active { background: var(--vinho); color: var(--papel); }
+        .btn-ano-v:hover { background: #d7ccc8; }
 
         .container-tabela-v { 
-            border: 2px solid var(--vinho); 
-            border-radius: 12px; 
-            background: white; 
-            padding: 25px; 
+            border: 2px solid var(--vinho); border-radius: 4px; 
+            background: white; padding: 20px; 
+            box-shadow: 5px 5px 0px rgba(61, 43, 31, 0.2);
         }
         
         .header-verde-v { 
-            background-color: var(--verde-velho); 
-            color: white; 
-            padding: 15px; 
-            border-radius: 6px; 
-            display: flex; 
-            align-items: center; 
-            margin-bottom: 25px; 
+            background-color: var(--verde-velho); color: white; 
+            padding: 15px; display: flex; align-items: center; margin-bottom: 25px; 
+            border-bottom: 3px solid var(--vinho);
         }
         
         .nav-meses-v { 
-            display: flex; 
-            justify-content: space-between; 
-            border-bottom: 2px solid var(--borda); 
-            margin-bottom: 25px; 
+            display: flex; justify-content: space-between; 
+            border-bottom: 2px solid var(--borda); margin-bottom: 25px; 
+            overflow-x: auto; white-space: nowrap; padding-bottom: 5px;
         }
         
         .mes-v { 
-            text-decoration: none; 
-            color: #444; 
-            font-weight: 900; 
-            padding: 8px; 
-            cursor: pointer; 
-            font-size: 0.9rem; 
-            border-bottom: 4px solid transparent; 
+            text-decoration: none; color: var(--vinho); font-weight: 900; 
+            padding: 8px 12px; cursor: pointer; font-size: 0.9rem; 
+            border-bottom: 3px solid transparent; 
         }
-        .mes-v.active { 
-            color: var(--verde-velho); 
-            border-bottom: 4px solid var(--verde-velho); 
-        }
+        .mes-v.active { color: var(--verde-velho); border-bottom: 3px solid var(--verde-velho); }
         
         .btn-lupa-v { 
-            background-color: var(--sepia-escuro); 
-            color: var(--papel); 
-            border-radius: 4px; 
-            padding: 8px 30px; 
-            text-decoration: none; 
-            display: inline-block; 
-            font-size: 1.1rem;
-            transition: 0.2s;
+            background-color: var(--sepia-escuro); color: var(--papel); 
+            border-radius: 4px; padding: 5px 20px; text-decoration: none; 
+            display: inline-block; font-size: 1rem; transition: 0.2s;
             border: 1px solid #3e2723;
         }
-        .btn-lupa-v:hover { 
-            background-color: #3e2723; 
-            color: white; 
-            transform: scale(1.05);
-        }
+        .btn-lupa-v:hover { background-color: #3e2723; color: white; transform: scale(1.05); }
 
-        /* RODAPÉ INSTITUCIONAL (LINHA AZUL) */
         .rodape-oficial {
-            width: 1200px;
-            background-color: #ffffff;
+            width: 100%; background-color: #ffffff;
             border-top: 5px solid var(--azul-institucional); 
-            box-shadow: 0 -3px 10px rgba(0,0,0,0.1);
-            text-align: center;
+            text-align: center; padding: 20px;
         }
-        .img-rodape {
-            width: 1200px;
-            height: 150px;
-            display: block;
-            object-fit: contain;
+        .img-rodape { max-width: 100%; height: auto; max-height: 120px; display: inline-block; }
+
+        @media (max-width: 768px) {
+            .espaco-banner-topo { height: 180px; }
+            .conteudo-principal { padding: 20px; }
+            .nav-link-v { font-size: 0.8rem; padding: 8px 10px; width: 100%; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
         }
     </style>
 </head>
@@ -158,7 +119,8 @@
         <nav class="navbar-vintage">
             <a href="index.html" class="nav-link-v">Início</a>
             <a href="acervo.html" class="nav-link-v">Acervo Moderno</a>
-            </nav>
+            <a href="noticias.html" class="nav-link-v">Notícias</a>
+        </nav>
 
         <main class="conteudo-principal">
             <div class="grid-anos" id="containerAnos"></div>
@@ -171,17 +133,18 @@
 
                 <div class="nav-meses-v" id="containerMeses"></div>
 
-                <table class="table table-hover align-middle">
-                    <thead>
-                        <tr style="border-bottom: 2px solid var(--vinho);">
-                            <th class="ps-4">EDIÇÃO</th>
-                            <th>DATA DA EDIÇÃO</th>
-                            <th class="text-center">PESQUISAR</th>
-                        </tr>
-                    </thead>
-                    <tbody id="corpoTabela">
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" style="font-family: 'Courier New', monospace;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--vinho);">
+                                <th class="ps-4">EDIÇÃO</th>
+                                <th>DATA</th>
+                                <th class="text-center">LER</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabela"></tbody>
+                    </table>
+                </div>
             </div>
         </main>
 
@@ -195,6 +158,11 @@
         let anoSel = 1945, mesSel = "MAR";
 
         function renderizar() {
+            if(typeof baseDeDados === 'undefined') {
+                document.getElementById('containerAnos').innerHTML = "Erro ao carregar dados.";
+                return;
+            }
+
             const contAnos = document.getElementById('containerAnos');
             contAnos.innerHTML = '';
             for(let i=1945; i<=1974; i++) {
@@ -203,6 +171,8 @@
                 btn.innerText = i;
                 btn.onclick = () => { 
                     anoSel = i; 
+                    mesSel = "JAN";
+                    if(i===1945) mesSel = "MAR";
                     document.getElementById('txtAno').innerText = i; 
                     renderizar(); 
                 };
@@ -216,7 +186,9 @@
 
             const corpo = document.getElementById('corpoTabela');
             const filtrados = baseDeDados.filter(i => {
-                const mesIdx = parseInt(i.data.split('/')[1]) - 1;
+                const parts = i.data.split('/');
+                if(parts.length < 2) return false;
+                const mesIdx = parseInt(parts[1]) - 1;
                 return i.ano === anoSel && mesesNomes[mesIdx] === mesSel;
             });
 
@@ -233,10 +205,11 @@
                     </tr>
                 `).join('');
             } else {
-                corpo.innerHTML = `<tr><td colspan="3" class="text-center p-5 text-muted italic">Nenhum registro encontrado para este período.</td></tr>`;
+                corpo.innerHTML = `<tr><td colspan="3" class="text-center p-5 text-muted italic">Nenhum registro encontrado.</td></tr>`;
             }
         }
         renderizar();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

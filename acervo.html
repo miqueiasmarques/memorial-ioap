@@ -4,175 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acervo Histórico - Imprensa Oficial AP</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
-    <script src="dados.js"></script>
-
-    <style>
-        html { overflow-y: scroll; }
-        :root { 
-            --azul: #002b5c; 
-            --ouro: #c5a059; 
-            --verde: #29a771; 
-            --fundo: #f2f4f5; 
-        }
-        
-        body { 
-            background-color: var(--fundo); 
-            margin: 0; padding: 0;
-            text-align: center;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .caixa-central { 
-            width: 1200px; 
-            display: inline-block; 
-            text-align: left; 
-            vertical-align: top;
-            background-color: white;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        .topo-banner { 
-            width: 1200px; height: 300px; 
-            background: url('img/banner-topo.png') no-repeat center; 
-            background-size: contain;
-        }
-        .navbar-gov { background-color: var(--azul); border-bottom: 4px solid var(--ouro); }
-        .menu-lista { display: flex; list-style: none; margin: 0; padding: 0; }
-        .nav-link { color: white !important; font-weight: 600; padding: 15px 25px !important; text-transform: uppercase; font-size: 0.85rem; text-decoration: none; }
-        .nav-link:hover { background: rgba(255,255,255,0.1); }
-        
-        .banner-id { 
-            width: 1200px; height: 100px; 
-            background: url('img/banner-id.png') no-repeat center; 
-            background-size: 100% 100%; margin-top: -1px;
-        }
-
-        .conteudo-principal { padding: 40px; }
-        .titulo-pg { color: var(--azul); border-left: 6px solid var(--verde); padding-left: 15px; font-weight: 700; }
-
-        .grid-anos {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            background: #f8f9fa;
-            padding: 25px;
-            border-radius: 8px;
-            border: 1px solid #eee;
-            margin-bottom: 40px;
-        }
-        .btn-ano {
-            min-width: 65px;
-            font-weight: bold;
-            font-size: 0.85rem;
-        }
-
-        .container-tabela {
-            border: 2px solid #6f42c1 !important; 
-            border-radius: 15px;
-            background: white;
-            padding: 30px;
-        }
-
-        .header-tabela {
-            background-color: var(--verde);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            margin-bottom: 30px;
-        }
-
-        .mes-nav {
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 2px solid #eee;
-            margin-bottom: 30px;
-            padding-bottom: 10px;
-        }
-        .mes-link {
-            text-decoration: none;
-            color: var(--azul);
-            font-weight: 800;
-            font-size: 0.95rem;
-            padding: 5px 12px;
-            cursor: pointer;
-        }
-        .mes-link.active {
-            color: var(--verde);
-            border-bottom: 4px solid var(--verde);
-        }
-
-        .table thead { background-color: var(--verde); color: white; }
-        .btn-visualizar {
-            background-color: var(--verde);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 6px 30px;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        /* RODAPÉ INSTITUCIONAL ATUALIZADO (IGUAL À INDEX) */
-        .rodape-oficial {
-            width: 1200px;
-            background-color: #ffffff;
-            border-top: 5px solid var(--azul); 
-            box-shadow: 0 -3px 10px rgba(0,0,0,0.03);
-            text-align: center;
-        }
-        .img-rodape {
-            width: 1200px;
-            height: 150px;
-            display: block;
-            object-fit: contain;
-        }
-    </style>
+    <!-- CSS Externo -->
+    <link rel="stylesheet" href="css/estilo.css">
+    
+    <!-- Dados do Acervo -->
+    <script src="js/dados.js"></script>
 </head>
 <body>
 
     <div class="caixa-central">
         <div class="topo-banner"></div>
+        
         <nav class="navbar-gov">
             <ul class="menu-lista">
                 <li><a class="nav-link" href="index.html">Início</a></li>
-                <li><a class="nav-link" href="javascript:void(0);">Notícias</a></li>
+                <li><a class="nav-link" href="noticias.html">Notícias</a></li>
                 <li><a class="nav-link" href="acervo-vintage.html">Memorial Vintage</a></li>
-                <li style="margin-left: auto;"><a class="nav-link" href="javascript:void(0);"><i class="bi bi-search"></i> BUSCAR</a></li>
+                <li style="margin-left: auto;"><a class="nav-link" href="#"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
+        
         <div class="banner-id"></div>
 
         <main class="conteudo-principal">
             <h2 class="titulo-pg">ACERVO HISTÓRICO DIGITAL</h2>
             <p class="text-muted mb-4">Consulte as edições digitalizadas do <strong>Jornal Amapá</strong> e <strong>Novo Amapá</strong> (1945 — 1974).</p>
 
-            <div class="grid-anos" id="gridAnos"></div>
+            <!-- Seletor de Anos -->
+            <div class="grid-anos" id="gridAnos">Carregando anos...</div>
 
             <div class="container-tabela shadow-sm">
                 <div class="header-tabela">
                     <i class="bi bi-folder2-open fs-3 me-3"></i>
-                    <h5 class="m-0 fw-bold">Acervo - Jornais Amapá e Novo Amapá (<span id="txtAnoNav">1945</span>)</h5>
+                    <h5 class="m-0 fw-bold">Jornais de <span id="txtAnoNav">1945</span></h5>
                 </div>
 
+                <!-- Navegação de Meses -->
                 <div class="mes-nav" id="navMeses"></div>
 
-                <table class="table table-hover align-middle">
-                    <thead>
-                        <tr>
-                            <th class="ps-4">EDIÇÃO</th>
-                            <th>DATA</th>
-                            <th class="text-center">VISUALIZAR</th>
-                        </tr>
-                    </thead>
-                    <tbody id="corpoTabela">
+                <!-- Tabela Responsiva -->
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th class="ps-4">EDIÇÃO</th>
+                                <th>DATA</th>
+                                <th class="text-center">VISUALIZAR</th>
+                            </tr>
+                        </thead>
+                        <tbody id="corpoTabela">
+                            <!-- JS preenche aqui -->
                         </tbody>
-                </table>
+                    </table>
+                </div>
             </div>
         </main>
 
@@ -181,24 +70,37 @@
         </footer>
     </div>
 
+    <!-- Script de Lógica do Acervo -->
     <script>
         const mesesNomes = ["JAN", "FEV", "MAR", "ABR", "MAI", "JUN", "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"];
-        let anoSel = 1945, mesSel = "MAR";
+        let anoSel = 1945, mesSel = "MAR"; // Ano e mês inicial
 
         function renderizar() {
-            // 1. Gerar botões de Anos
+            // 1. Verificar se dados existem
+            if(typeof baseDeDados === 'undefined') {
+                document.getElementById('gridAnos').innerHTML = '<div class="alert alert-danger">Erro: Arquivo dados.js não encontrado ou corrompido.</div>';
+                return;
+            }
+
+            // 2. Gerar Botões de Anos (1945 a 1974)
             const divAnos = document.getElementById('gridAnos');
             divAnos.innerHTML = '';
             for(let i=1945; i<=1974; i++) {
-                const btn = document.createElement('a');
-                btn.href = "javascript:void(0);";
+                const btn = document.createElement('button');
                 btn.className = `btn btn-sm btn-ano ${i === anoSel ? 'btn-dark' : 'btn-outline-dark'}`;
                 btn.innerText = i;
-                btn.onclick = () => { anoSel = i; document.getElementById('txtAnoNav').innerText = i; renderizar(); };
+                btn.onclick = () => { 
+                    anoSel = i; 
+                    mesSel = "JAN"; // Reseta para janeiro ao trocar de ano
+                    if(i === 1945) mesSel = "MAR"; // Exceção: 1945 começa em Março
+                    
+                    document.getElementById('txtAnoNav').innerText = i; 
+                    renderizar(); 
+                };
                 divAnos.appendChild(btn);
             }
 
-            // 2. Gerar Links de Meses
+            // 3. Gerar Links de Meses
             const divMeses = document.getElementById('navMeses');
             divMeses.innerHTML = mesesNomes.map(m => `
                 <a href="javascript:void(0);" 
@@ -206,13 +108,16 @@
                    onclick="mesSel='${m}'; renderizar()">${m}</a>
             `).join('');
 
-            // 3. Filtrar e Mostrar Jornais (Puxando do dados.js)
+            // 4. Filtrar Dados
             const corpo = document.getElementById('corpoTabela');
             const filtrados = baseDeDados.filter(item => {
-                const mIdx = parseInt(item.data.split('/')[1]) - 1;
+                const parts = item.data.split('/');
+                if(parts.length < 2) return false;
+                const mIdx = parseInt(parts[1]) - 1;
                 return item.ano === anoSel && mesesNomes[mIdx] === mesSel;
             });
 
+            // 5. Exibir na Tabela
             if(filtrados.length > 0) {
                 corpo.innerHTML = filtrados.map(item => `
                     <tr>
@@ -220,17 +125,21 @@
                         <td>${item.data}</td>
                         <td class="text-center">
                             <a href="${item.link}" target="_blank" class="btn-visualizar">
-                                <i class="bi bi-search"></i>
+                                <i class="bi bi-search"></i> Abrir
                             </a>
                         </td>
                     </tr>
                 `).join('');
             } else {
-                corpo.innerHTML = `<tr><td colspan="3" class="text-center p-5 text-muted italic">Nenhuma edição encontrada para este período.</td></tr>`;
+                corpo.innerHTML = `<tr><td colspan="3" class="text-center p-5 text-muted fst-italic">
+                    Nenhuma edição digitalizada encontrada para ${mesSel}/${anoSel}.
+                </td></tr>`;
             }
         }
 
+        // Inicia a aplicação
         renderizar();
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
