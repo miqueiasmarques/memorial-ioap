@@ -4,121 +4,131 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imprensa Oficial - Amapá</title>
-    
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
-    <!-- CSS Externo -->
     <link rel="stylesheet" href="css/estilo.css">
-    
-    <!-- Seus Dados (Notícias) -->
     <script src="js/noticias.js"></script>
-    
-    <style>
-        /* Estilos exclusivos da Home */
-        .secao-noticias-home { padding: 40px 20px; background-color: white; }
-        .titulo-home { 
-            color: var(--azul); 
-            font-weight: 800; 
-            margin-bottom: 30px; 
-            border-left: 5px solid var(--ouro); 
-            padding-left: 15px; 
-        }
-        .card-noticia-home { 
-            border: none; 
-            border-radius: 10px; 
-            overflow: hidden; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
-            background: white; 
-        }
-        .img-noticia-home { 
-            height: 250px; 
-            width: 100%; 
-            object-fit: cover; 
-        }
-        .btn-leia-mais { 
-            color: var(--azul); 
-            font-weight: 700; 
-            text-decoration: none; 
-            font-size: 0.95rem; 
-        }
-        .btn-leia-mais:hover { color: var(--ouro); }
-        
-        @media (max-width: 768px) {
-            .img-noticia-home { height: 200px; }
-        }
-    </style>
 </head>
 <body>
     <div class="caixa-central">
         <!-- Topo -->
         <div class="topo-container"><div class="topo-banner"></div></div>
         
-        <!-- Menu (No celular vira GRID 2x2) -->
+        <!-- Menu -->
         <nav class="navbar-gov">
-            <ul class="menu-lista">
+            <button class="btn-menu-mobile" onclick="toggleMenu()">
+                <i class="bi bi-list"></i> MENU DE NAVEGAÇÃO
+            </button>
+            <ul class="menu-lista" id="menuPrincipal">
                 <li><a class="nav-link" href="index.html">Início</a></li>
                 <li><a class="nav-link" href="noticias.html">Notícias</a></li> 
-                <li><a class="nav-link" href="acervo.html">Acervo Moderno</a></li>
-                <li><a class="nav-link" href="acervo-vintage.html">Memorial Vintage</a></li>
+                <li><a class="nav-link" href="acervo.html">Acervo Histórico</a></li>
                 <li><a class="nav-link" href="#"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
 
         <div class="banner-id"></div>
 
-        <!-- Conteúdo: Destaques -->
-        <div class="secao-noticias-home">
-            <h4 class="titulo-home">DESTAQUES DO PORTAL</h4>
+        <!-- ========================================== -->
+        <!-- ÁREA PRINCIPAL DO PORTAL (GRID 2/3 + 1/3) -->
+        <!-- ========================================== -->
+        <div class="portal-row">
+            
+            <!-- COLUNA ESQUERDA: DESTAQUE HISTÓRICO -->
+            <div class="portal-main">
+                <div class="hero-card">
+                    <div class="hero-img-wrapper">
+                        <!-- Banner do Acervo Histórico -->
+                        <img src="img/banner-vintage.png" alt="Acervo Digital" class="hero-img">
+                    </div>
+                    <div class="hero-content">
+                        <span class="tag-destaque">Memória Viva</span>
+                        <h1>Resgate Histórico do Amapá</h1>
+                        <p>O <strong>Núcleo de Imprensa Oficial (NIO)</strong>, vinculado à Secretaria de Administração, disponibiliza o acervo digitalizado de jornais históricos (1945–1974). Uma viagem no tempo através das páginas do Jornal Amapá e Novo Amapá.</p>
+                        <a href="acervo.html" class="btn-acessar">
+                            <i class="bi bi-collection"></i> ACESSAR ACERVO COMPLETO
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUNA DIREITA: SIDEBAR (DIÁRIO + WHATSAPP) -->
+            <div class="portal-sidebar">
+                
+                <!-- Widget 1: Diário Oficial -->
+                <div class="sidebar-widget">
+                    <div class="doe-header">
+                        <h3>DIÁRIO OFICIAL</h3>
+                        <p class="doe-sub">Edições atuais e autenticidade</p>
+                    </div>
+                    <a href="http://diofe.portal.ap.gov.br" target="_blank">
+                        <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
+                    </a>
+                    <a href="http://diofe.portal.ap.gov.br" target="_blank" class="btn-diario-oficial">
+                        <i class="bi bi-download"></i> BAIXAR ÚLTIMA EDIÇÃO
+                    </a>
+                    <a href="http://diofe.portal.ap.gov.br" target="_blank" class="link-secundario">
+                        Ir para o Portal da SEAD <i class="bi bi-box-arrow-up-right"></i>
+                    </a>
+                </div>
+                
+                <!-- Widget 2: Banner WhatsApp (NOVO) -->
+                <div class="sidebar-widget-clean">
+                    <a href="https://wa.me/5596984002542" target="_blank" title="Fale conosco no WhatsApp">
+                        <!-- Certifique-se que salvou a imagem como banner-whatsapp.png -->
+                        <img src="img/banner-whatsapp.png" alt="Atendimento WhatsApp NIO" class="img-zap-lateral">
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- NOTÍCIAS EM GRADE -->
+        <!-- ========================================== -->
+        <div class="secao-noticias-grid">
+            <h3 class="titulo-secao-home"><span>ÚLTIMAS NOTÍCIAS</span></h3>
+            
             <div id="feedNoticias">
-                <!-- O JavaScript vai preencher isso aqui -->
                 <div class="text-center p-5"><div class="spinner-border text-primary"></div></div>
             </div>
-            
+
             <div class="text-center mt-5">
                 <a href="noticias.html" class="btn btn-outline-primary fw-bold px-5 py-2">VER TODAS AS NOTÍCIAS</a>
             </div>
         </div>
 
-        <!-- Rodapé -->
         <footer class="rodape-oficial">
             <img src="img/banner-governo-rodape.png" alt="Governo do Amapá" class="img-rodape">
         </footer>
     </div>
 
-    <!-- Script de Renderização -->
+    <!-- SCRIPTS -->
     <script>
-        const feed = document.getElementById('feedNoticias');
-        
-        // Verifica se o arquivo de notícias foi carregado
-        if(typeof baseNoticias !== 'undefined' && baseNoticias.length > 0) {
-            // Pega apenas a última notícia para destaque (ou as 3 últimas se preferir)
-            const destaques = baseNoticias.slice(0, 3); 
+        function toggleMenu() {
+            document.getElementById('menuPrincipal').classList.toggle('ativo');
+        }
 
+        const feed = document.getElementById('feedNoticias');
+        if(typeof baseNoticias !== 'undefined' && baseNoticias.length > 0) {
+            // Pega as 3 primeiras notícias para o Grid
+            const destaques = baseNoticias.slice(0, 3); 
+            
             feed.innerHTML = destaques.map(n => `
-                <div class="card card-noticia-home mb-4">
-                    <div class="row g-0 align-items-center">
-                        <div class="col-md-5">
-                            <img src="${n.imagens[0]}" class="img-fluid img-noticia-home" alt="${n.titulo}">
-                        </div>
-                        <div class="col-md-7">
-                            <div class="card-body p-4 ps-md-5">
-                                <small class="text-muted fw-bold text-uppercase"><i class="bi bi-calendar3"></i> ${n.data}</small>
-                                <h2 class="card-title fw-bold mt-2 mb-3" style="color:var(--azul); font-size: 1.5rem;">${n.titulo}</h2>
-                                <p class="card-text text-secondary mb-4 d-none d-md-block" style="font-size: 1rem; line-height: 1.6;">${n.resumo}</p>
-                                <a href="noticias.html" class="btn-leia-mais stretched-link">Saiba mais <i class="bi bi-arrow-right"></i></a>
-                            </div>
-                        </div>
+                <div class="card-portal">
+                    <img src="${n.imagens[0]}" class="card-img-top" alt="${n.titulo}">
+                    <div class="card-body">
+                        <span class="card-date"><i class="bi bi-calendar3"></i> ${n.data}</span>
+                        <h4 class="card-title">${n.titulo}</h4>
+                        <p class="card-text text-truncate" style="max-height: 4.5em; overflow: hidden;">${n.resumo}</p>
+                        <a href="noticias.html" class="card-link">Leia Mais <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             `).join('');
         } else {
-            feed.innerHTML = '<div class="alert alert-warning">Nenhuma notícia encontrada no sistema.</div>';
+            feed.innerHTML = '<div class="alert alert-warning col-12">Nenhuma notícia encontrada.</div>';
         }
     </script>
-    
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
