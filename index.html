@@ -4,17 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Imprensa Oficial - Amapá</title>
+    
+    <link rel="shortcut icon" href="img/favicon1.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/estilo.css">
+    
+    <script src="js/dados.js"></script>
     <script src="js/noticias.js"></script>
+    <script src="js/busca.js"></script>
 </head>
 <body>
     <div class="caixa-central">
-        <!-- Topo -->
         <div class="topo-container"><div class="topo-banner"></div></div>
         
-        <!-- Menu -->
         <nav class="navbar-gov">
             <button class="btn-menu-mobile" onclick="toggleMenu()">
                 <i class="bi bi-list"></i> MENU DE NAVEGAÇÃO
@@ -23,78 +26,60 @@
                 <li><a class="nav-link" href="index.html">Início</a></li>
                 <li><a class="nav-link" href="noticias.html">Notícias</a></li> 
                 <li><a class="nav-link" href="acervo.html">Acervo Histórico</a></li>
-                <li><a class="nav-link" href="#"><i class="bi bi-search"></i> BUSCAR</a></li>
+                <li><a class="nav-link" href="institucional.html">Institucional</a></li>
+                <li><a class="nav-link" href="javascript:void(0);" onclick="abrirBusca()"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
 
         <div class="banner-id"></div>
 
-        <!-- ========================================== -->
-        <!-- ÁREA PRINCIPAL DO PORTAL (GRID 2/3 + 1/3) -->
-        <!-- ========================================== -->
-        <div class="portal-row">
-            
-            <!-- COLUNA ESQUERDA: DESTAQUE HISTÓRICO -->
-            <div class="portal-main">
-                <div class="hero-card">
-                    <div class="hero-img-wrapper">
-                        <!-- Banner do Acervo Histórico -->
-                        <img src="img/banner-vintage.png" alt="Acervo Digital" class="hero-img">
+        <div class="home-container">
+            <div class="layout-grid">
+                <div class="coluna-hero">
+                    <div class="hero-card">
+                        <div class="hero-img-wrapper">
+                            <img src="img/banner-vintage.png" alt="Acervo Digital" class="hero-img">
+                        </div>
+                        <div class="hero-content">
+                            <span class="tag-destaque">Memória Viva</span>
+                            <h1>Resgate Histórico do Amapá</h1>
+                            <p>O <strong>Núcleo de Imprensa Oficial (NIO)</strong>, vinculado à Secretaria de Administração do Governo do Amapá, disponibiliza o acervo digitalizado de jornais históricos (1945–1974). Uma viagem no tempo através das páginas do Jornal Amapá e Novo Amapá.</p>
+                            <a href="acervo.html" class="btn-acessar">
+                                <i class="bi bi-collection"></i> ACESSAR ACERVO COMPLETO
+                            </a>
+                        </div>
                     </div>
-                    <div class="hero-content">
-                        <span class="tag-destaque">Memória Viva</span>
-                        <h1>Resgate Histórico do Amapá</h1>
-                        <p>O <strong>Núcleo de Imprensa Oficial (NIO)</strong>, vinculado à Secretaria de Administração, disponibiliza o acervo digitalizado de jornais históricos (1945–1974). Uma viagem no tempo através das páginas do Jornal Amapá e Novo Amapá.</p>
-                        <a href="acervo.html" class="btn-acessar">
-                            <i class="bi bi-collection"></i> ACESSAR ACERVO COMPLETO
+                </div>
+
+                <div class="coluna-lateral">
+                    <div class="sidebar-widget">
+                        <div class="doe-header">
+                            <h3>DIÁRIO OFICIAL</h3>
+                            <p class="doe-sub">Edições atuais e históricas</p>
+                        </div>
+                        <a href="http://diofe.portal.ap.gov.br" target="_blank">
+                            <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
+                        </a>
+                        <a href="http://diofe.portal.ap.gov.br" target="_blank" class="btn-diario-oficial">
+                            <i class="bi bi-download"></i> BAIXAR EDIÇÃO
+                        </a>
+                    </div>
+                    <div class="sidebar-widget-clean">
+                        <a href="https://wa.me/5596984002542" target="_blank" title="Fale conosco no WhatsApp">
+                            <img src="img/banner-whatsapp.png" alt="WhatsApp NIO" class="img-zap-lateral">
                         </a>
                     </div>
                 </div>
             </div>
 
-            <!-- COLUNA DIREITA: SIDEBAR (DIÁRIO + WHATSAPP) -->
-            <div class="portal-sidebar">
-                
-                <!-- Widget 1: Diário Oficial -->
-                <div class="sidebar-widget">
-                    <div class="doe-header">
-                        <h3>DIÁRIO OFICIAL</h3>
-                        <p class="doe-sub">Edições atuais e históricas</p>
-                    </div>
-                    <a href="http://diofe.portal.ap.gov.br" target="_blank">
-                        <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
-                    </a>
-                    <a href="http://diofe.portal.ap.gov.br" target="_blank" class="btn-diario-oficial">
-                        <i class="bi bi-download"></i> BAIXAR ÚLTIMA EDIÇÃO
-                    </a>
-                    <a href="http://diofe.portal.ap.gov.br" target="_blank" class="link-secundario">
-                        Ir para o Portal da SEAD <i class="bi bi-box-arrow-up-right"></i>
-                    </a>
+            <div class="secao-noticias-full">
+                <h3 class="titulo-secao-home"><span>ÚLTIMAS NOTÍCIAS</span></h3>
+                <div id="feedNoticias">
+                    <div class="text-center p-5"><div class="spinner-border text-primary"></div></div>
                 </div>
-                
-                <!-- Widget 2: Banner WhatsApp (NOVO) -->
-                <div class="sidebar-widget-clean">
-                    <a href="https://wa.me/5596984002542" target="_blank" title="Fale conosco no WhatsApp">
-                        <!-- Certifique-se que salvou a imagem como banner-whatsapp.png -->
-                        <img src="img/banner-whatsapp.png" alt="Atendimento WhatsApp NIO" class="img-zap-lateral">
-                    </a>
+                <div class="text-center mt-5">
+                    <a href="noticias.html" class="btn btn-outline-primary fw-bold px-5 py-2">VER TODAS AS NOTÍCIAS</a>
                 </div>
-
-            </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- NOTÍCIAS EM GRADE -->
-        <!-- ========================================== -->
-        <div class="secao-noticias-grid">
-            <h3 class="titulo-secao-home"><span>ÚLTIMAS NOTÍCIAS</span></h3>
-            
-            <div id="feedNoticias">
-                <div class="text-center p-5"><div class="spinner-border text-primary"></div></div>
-            </div>
-
-            <div class="text-center mt-5">
-                <a href="noticias.html" class="btn btn-outline-primary fw-bold px-5 py-2">VER TODAS AS NOTÍCIAS</a>
             </div>
         </div>
 
@@ -103,7 +88,17 @@
         </footer>
     </div>
 
-    <!-- SCRIPTS -->
+    <div id="modalBusca" class="modal-overlay">
+        <div class="modal-box">
+            <span class="modal-close" onclick="fecharBusca()">&times;</span>
+            <h3>Pesquisar no Acervo Histórico</h3>
+            <input type="text" id="campoBusca" placeholder="Digite o ano ou edição..." onkeyup="realizarBusca()">
+            <div id="resultadosBusca">
+                <p class="text-muted mt-3">Digite para pesquisar...</p>
+            </div>
+        </div>
+    </div>
+
     <script>
         function toggleMenu() {
             document.getElementById('menuPrincipal').classList.toggle('ativo');
@@ -111,9 +106,7 @@
 
         const feed = document.getElementById('feedNoticias');
         if(typeof baseNoticias !== 'undefined' && baseNoticias.length > 0) {
-            // Pega as 3 primeiras notícias para o Grid
             const destaques = baseNoticias.slice(0, 3); 
-            
             feed.innerHTML = destaques.map(n => `
                 <div class="card-portal">
                     <img src="${n.imagens[0]}" class="card-img-top" alt="${n.titulo}">
@@ -128,8 +121,18 @@
         } else {
             feed.innerHTML = '<div class="alert alert-warning col-12">Nenhuma notícia encontrada.</div>';
         }
+
+        let iconIndex = 0;
+        const icons = ['img/favicon1.png', 'img/favicon2.png'];
+        function changeFavicon() {
+            let link = document.querySelector("link[rel~='icon']");
+            if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+            link.href = icons[iconIndex];
+            iconIndex = (iconIndex + 1) % icons.length;
+        }
+        setInterval(changeFavicon, 3000);
+        changeFavicon();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

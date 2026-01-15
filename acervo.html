@@ -5,36 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acervo Histórico - Imprensa Oficial AP</title>
     
-    <!-- Bootstrap CSS -->
+    <link rel="shortcut icon" href="img/favicon1.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Ícones -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
-    <!-- CSS Externo -->
     <link rel="stylesheet" href="css/estilo.css">
     
-    <!-- Dados do Acervo -->
     <script src="js/dados.js"></script>
+    <script src="js/busca.js"></script>
 </head>
 <body>
-
     <div class="caixa-central">
         <div class="topo-banner"></div>
         
-        <!-- MENU COM BOTÃO MOBILE -->
         <nav class="navbar-gov">
-            <!-- Botão Hambúrguer (Só aparece no celular) -->
             <button class="btn-menu-mobile" onclick="toggleMenu()">
                 <i class="bi bi-list"></i> MENU DE NAVEGAÇÃO
             </button>
-
-            <!-- Lista de Links -->
             <ul class="menu-lista" id="menuPrincipal">
                 <li><a class="nav-link" href="index.html">Início</a></li>
                 <li><a class="nav-link" href="noticias.html">Notícias</a></li>
-                <!-- Destaque na página atual -->
                 <li><a class="nav-link" href="acervo.html" style="background: rgba(255,255,255,0.1);">Acervo Histórico</a></li>
-                <li style="margin-left: auto;"><a class="nav-link" href="#"><i class="bi bi-search"></i> BUSCAR</a></li>
+                <li><a class="nav-link" href="institucional.html">Institucional</a></li>
+                <li><a class="nav-link" href="javascript:void(0);" onclick="abrirBusca()"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
         
@@ -51,9 +43,7 @@
                     <i class="bi bi-folder2-open fs-3 me-3"></i>
                     <h5 class="m-0 fw-bold">Jornais de <span id="txtAnoNav">1945</span></h5>
                 </div>
-
                 <div class="mes-nav" id="navMeses"></div>
-
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
@@ -74,9 +64,18 @@
         </footer>
     </div>
 
-    <!-- SCRIPTS -->
+    <div id="modalBusca" class="modal-overlay">
+        <div class="modal-box">
+            <span class="modal-close" onclick="fecharBusca()">&times;</span>
+            <h3>Pesquisar no Acervo Histórico</h3>
+            <input type="text" id="campoBusca" placeholder="Digite o ano ou edição..." onkeyup="realizarBusca()">
+            <div id="resultadosBusca">
+                <p class="text-muted mt-3">Digite para pesquisar...</p>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Função para abrir/fechar o menu no celular
         function toggleMenu() {
             document.getElementById('menuPrincipal').classList.toggle('ativo');
         }
@@ -89,30 +88,17 @@
                 document.getElementById('gridAnos').innerHTML = '<div class="alert alert-danger">Erro: Dados não carregados.</div>';
                 return;
             }
-
             const divAnos = document.getElementById('gridAnos');
             divAnos.innerHTML = '';
             for(let i=1945; i<=1974; i++) {
                 const btn = document.createElement('button');
                 btn.className = `btn btn-sm btn-ano ${i === anoSel ? 'btn-dark' : 'btn-outline-dark'}`;
                 btn.innerText = i;
-                btn.onclick = () => { 
-                    anoSel = i; 
-                    mesSel = "JAN"; 
-                    if(i === 1945) mesSel = "MAR";
-                    document.getElementById('txtAnoNav').innerText = i; 
-                    renderizar(); 
-                };
+                btn.onclick = () => { anoSel = i; mesSel = "JAN"; if(i === 1945) mesSel = "MAR"; document.getElementById('txtAnoNav').innerText = i; renderizar(); };
                 divAnos.appendChild(btn);
             }
-
             const divMeses = document.getElementById('navMeses');
-            divMeses.innerHTML = mesesNomes.map(m => `
-                <a href="javascript:void(0);" 
-                   class="mes-link ${m === mesSel ? 'active' : ''}" 
-                   onclick="mesSel='${m}'; renderizar()">${m}</a>
-            `).join('');
-
+            divMeses.innerHTML = mesesNomes.map(m => `<a href="javascript:void(0);" class="mes-link ${m === mesSel ? 'active' : ''}" onclick="mesSel='${m}'; renderizar()">${m}</a>`).join('');
             const corpo = document.getElementById('corpoTabela');
             const filtrados = baseDeDados.filter(item => {
                 const parts = item.data.split('/');
@@ -120,29 +106,24 @@
                 const mIdx = parseInt(parts[1]) - 1;
                 return item.ano === anoSel && mesesNomes[mIdx] === mesSel;
             });
-
             if(filtrados.length > 0) {
-                corpo.innerHTML = filtrados.map(item => `
-                    <tr>
-                        <td class="ps-4 fw-bold text-uppercase">${item.edicao}</td>
-                        <td>${item.data}</td>
-                        <td class="text-center">
-                            <a href="${item.link}" target="_blank" class="btn-visualizar">
-                                <i class="bi bi-search"></i> Abrir
-                            </a>
-                        </td>
-                    </tr>
-                `).join('');
+                corpo.innerHTML = filtrados.map(item => `<tr><td class="ps-4 fw-bold text-uppercase">${item.edicao}</td><td>${item.data}</td><td class="text-center"><a href="${item.link}" target="_blank" class="btn-visualizar"><i class="bi bi-search"></i> Abrir</a></td></tr>`).join('');
             } else {
-                corpo.innerHTML = `<tr><td colspan="3" class="text-center p-5 text-muted fst-italic">
-                    Nenhuma edição digitalizada encontrada para ${mesSel}/${anoSel}.
-                </td></tr>`;
+                corpo.innerHTML = `<tr><td colspan="3" class="text-center p-5 text-muted fst-italic">Nenhuma edição encontrada para ${mesSel}/${anoSel}.</td></tr>`;
             }
         }
         renderizar();
+        let iconIndex = 0;
+        const icons = ['img/favicon1.png', 'img/favicon2.png'];
+        function changeFavicon() {
+            let link = document.querySelector("link[rel~='icon']");
+            if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+            link.href = icons[iconIndex];
+            iconIndex = (iconIndex + 1) % icons.length;
+        }
+        setInterval(changeFavicon, 3000);
+        changeFavicon();
     </script>
-    
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
