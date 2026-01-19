@@ -17,7 +17,10 @@
     <style>
         .foto-principal { width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
         .foto-secundaria { width: 100%; height: 170px; object-fit: cover; border-radius: 8px; }
-        @media (max-width: 768px) { .foto-principal { height: 250px; } .foto-secundaria { height: 120px; } }
+        @media (max-width: 768px) {
+            .foto-principal { height: 250px; }
+            .foto-secundaria { height: 120px; }
+        }
     </style>
 </head>
 <body>
@@ -29,9 +32,12 @@
             </button>
             <ul class="menu-lista" id="menuPrincipal">
                 <li><a class="nav-link" href="index.html">Início</a></li>
-                <li><a class="nav-link" href="noticias.html" style="background: rgba(255,255,255,0.1);">Notícias</a></li>
+                <!-- ATIVO AQUI -->
+                <li><a class="nav-link active" href="noticias.html">Notícias</a></li>
                 <li><a class="nav-link" href="acervo.html">Acervo Histórico</a></li>
                 <li><a class="nav-link" href="institucional.html">Institucional</a></li>
+                <!-- BOTÃO CORRIGIDO -->
+                <li><a class="nav-link" href="solicitacao.html">Solicitar Pesquisa</a></li>
                 <li><a class="nav-link" href="javascript:void(0);" onclick="abrirBusca()"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
@@ -48,11 +54,12 @@
         </footer>
     </div>
 
+    <!-- MODAL DE BUSCA -->
     <div id="modalBusca" class="modal-overlay">
         <div class="modal-box">
             <span class="modal-close" onclick="fecharBusca()">&times;</span>
             <h3>Pesquisar no Acervo Histórico</h3>
-            <input type="text" id="campoBusca" placeholder="Digite o ano ou edição..." onkeyup="realizarBusca()">
+            <input type="text" id="campoBusca" placeholder="Digite o ano (ex: 1950) ou edição..." onkeyup="realizarBusca()">
             <div id="resultadosBusca">
                 <p class="text-muted mt-3">Digite para pesquisar...</p>
             </div>

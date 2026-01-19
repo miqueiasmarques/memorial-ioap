@@ -1,4 +1,4 @@
-/* css/estilo.css - VERSÃO FINAL (Equilíbrio de Alturas) */
+/* css/estilo.css - VERSÃO FINAL (Menu Ativo + Mapa) */
 
 /* 1. IMPORTAÇÃO DAS FONTES */
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;800&family=Roboto:wght@400;500&display=swap');
@@ -56,6 +56,15 @@ a { text-decoration: none; }
 .menu-lista { display: flex; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; width: 100%; }
 .nav-link { color: white !important; font-weight: 700; padding: 15px 25px !important; text-transform: uppercase; font-size: 0.9rem; display: block; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.05); }
 .nav-link:hover { background: rgba(255,255,255,0.1); }
+
+/* ESTILO DO LINK ATIVO (NOVO) */
+.nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15); /* Fundo mais claro */
+    color: var(--ouro) !important; /* Texto dourado opcional ou manter branco */
+    border-bottom: 3px solid var(--ouro); /* Linha dourada embaixo */
+}
+
+/* Botão Buscar na direita */
 .menu-lista li:last-child { margin-left: auto; border-left: 1px solid rgba(255,255,255,0.1); border-right: none; }
 .btn-menu-mobile { display: none; width: 100%; background: var(--azul); color: white; border: none; padding: 15px; font-weight: 800; text-transform: uppercase; cursor: pointer; text-align: center; }
 
@@ -63,22 +72,8 @@ a { text-decoration: none; }
    LAYOUT GRADE DA HOME
    ========================================================= */
 .home-container { padding: 40px; }
-
-/* Mantém o alinhamento no topo */
-.layout-grid { 
-    display: grid; 
-    grid-template-columns: 2fr 1fr; 
-    gap: 30px; 
-    margin-bottom: 40px; 
-    align-items: start; 
-}
-
-.coluna-lateral { 
-    display: flex; 
-    flex-direction: column; 
-    gap: 20px; 
-    justify-content: flex-start; 
-}
+.layout-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px; align-items: stretch; }
+.coluna-lateral { display: flex; flex-direction: column; gap: 20px; justify-content: space-between; }
 
 /* --- HERO CARD (DESTAQUE) --- */
 .hero-card { 
@@ -86,8 +81,7 @@ a { text-decoration: none; }
     color: white; 
     border-radius: 8px; 
     overflow: hidden; 
-    /* Removemos altura 100% para não esticar demais */
-    height: auto; 
+    height: 100%; 
     display: flex; 
     flex-direction: column; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
@@ -96,10 +90,9 @@ a { text-decoration: none; }
 .hero-img-wrapper { 
     background-color: #fff; 
     border-bottom: 5px solid var(--ouro); 
-    display: block; 
-    /* Altura fixa controlada para equilibrar com a lateral */
-    height: 250px; 
-    overflow: hidden;
+    display: flex; 
+    flex-grow: 1; 
+    min-height: 200px; 
 }
 
 .hero-img { 
@@ -108,33 +101,23 @@ a { text-decoration: none; }
     object-fit: cover; 
     object-position: top center; 
 }
-
 .hero-card:hover .hero-img { transform: scale(1.05); transition: transform 0.5s; }
 
-/* Ajuste de espaçamento interno para reduzir altura total */
 .hero-content { 
+    flex-shrink: 0; 
+    flex-grow: 0; 
     padding: 25px 30px; 
-    text-align: left; 
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .tag-destaque { background-color: var(--ouro); color: var(--azul); font-weight: 800; text-transform: uppercase; font-size: 0.7rem; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-bottom: 10px; }
+.hero-content h1 { font-size: 1.8rem; margin-bottom: 10px; line-height: 1.2; color: white; }
+.hero-content p { font-size: 1.05rem; opacity: 0.95; margin-bottom: 20px; line-height: 1.6; text-align: justify; }
 
-.hero-content h1 { 
-    font-size: 1.8rem; 
-    margin-bottom: 15px; 
-    line-height: 1.1; 
-    color: white; 
-}
-
-.hero-content p { 
-    font-size: 0.95rem; 
-    opacity: 0.9; 
-    margin-bottom: 20px; 
-    line-height: 1.5; 
-    text-align: justify; 
-}
-
-.btn-acessar { background-color: var(--verde); color: white; font-weight: bold; padding: 10px 20px; border-radius: 4px; text-align: center; width: fit-content; transition: 0.3s; font-size: 0.9rem; text-transform: uppercase; }
+.btn-acessar { background-color: var(--verde); color: white; font-weight: bold; padding: 10px 20px; border-radius: 4px; text-align: center; width: fit-content; transition: 0.3s; font-size: 0.9rem; text-transform: uppercase; margin-top: 10px; }
 .btn-acessar:hover { background-color: #218c5e; color: white; }
 
 /* --- SIDEBAR WIDGETS --- */
@@ -210,17 +193,8 @@ a { text-decoration: none; }
     
     .layout-grid { display: flex; flex-direction: column; gap: 30px; }
     
-    /* CORREÇÃO DO ESPAÇO EM BRANCO AQUI */
-    .hero-img-wrapper { 
-        height: auto; 
-        min-height: 0; 
-        flex-grow: 0; 
-        display: block;
-    }
-    .hero-img { 
-        height: auto; width: 100%; object-fit: contain; display: block;
-    }
-    
+    .hero-img-wrapper { height: auto; min-height: 0; flex-grow: 0; display: block; }
+    .hero-img { height: auto; width: 100%; object-fit: contain; display: block; }
     .hero-content h1 { font-size: 1.5rem; }
 
     #feedNoticias { grid-template-columns: 1fr; }

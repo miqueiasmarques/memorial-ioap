@@ -14,6 +14,7 @@
     <script src="js/busca.js"></script>
 </head>
 <body>
+
     <div class="caixa-central">
         <div class="topo-banner"></div>
         
@@ -24,8 +25,11 @@
             <ul class="menu-lista" id="menuPrincipal">
                 <li><a class="nav-link" href="index.html">Início</a></li>
                 <li><a class="nav-link" href="noticias.html">Notícias</a></li>
-                <li><a class="nav-link" href="acervo.html" style="background: rgba(255,255,255,0.1);">Acervo Histórico</a></li>
+                <!-- ATIVO AQUI -->
+                <li><a class="nav-link active" href="acervo.html">Acervo Histórico</a></li>
                 <li><a class="nav-link" href="institucional.html">Institucional</a></li>
+                <!-- BOTÃO CORRIGIDO -->
+                <li><a class="nav-link" href="solicitacao.html">Solicitar Pesquisa</a></li>
                 <li><a class="nav-link" href="javascript:void(0);" onclick="abrirBusca()"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
@@ -43,7 +47,9 @@
                     <i class="bi bi-folder2-open fs-3 me-3"></i>
                     <h5 class="m-0 fw-bold">Jornais de <span id="txtAnoNav">1945</span></h5>
                 </div>
+
                 <div class="mes-nav" id="navMeses"></div>
+
                 <div class="table-responsive">
                     <table class="table table-hover align-middle">
                         <thead>
@@ -64,6 +70,7 @@
         </footer>
     </div>
 
+    <!-- MODAL DE BUSCA -->
     <div id="modalBusca" class="modal-overlay">
         <div class="modal-box">
             <span class="modal-close" onclick="fecharBusca()">&times;</span>
@@ -88,17 +95,30 @@
                 document.getElementById('gridAnos').innerHTML = '<div class="alert alert-danger">Erro: Dados não carregados.</div>';
                 return;
             }
+
             const divAnos = document.getElementById('gridAnos');
             divAnos.innerHTML = '';
             for(let i=1945; i<=1974; i++) {
                 const btn = document.createElement('button');
                 btn.className = `btn btn-sm btn-ano ${i === anoSel ? 'btn-dark' : 'btn-outline-dark'}`;
                 btn.innerText = i;
-                btn.onclick = () => { anoSel = i; mesSel = "JAN"; if(i === 1945) mesSel = "MAR"; document.getElementById('txtAnoNav').innerText = i; renderizar(); };
+                btn.onclick = () => { 
+                    anoSel = i; 
+                    mesSel = "JAN"; 
+                    if(i === 1945) mesSel = "MAR";
+                    document.getElementById('txtAnoNav').innerText = i; 
+                    renderizar(); 
+                };
                 divAnos.appendChild(btn);
             }
+
             const divMeses = document.getElementById('navMeses');
-            divMeses.innerHTML = mesesNomes.map(m => `<a href="javascript:void(0);" class="mes-link ${m === mesSel ? 'active' : ''}" onclick="mesSel='${m}'; renderizar()">${m}</a>`).join('');
+            divMeses.innerHTML = mesesNomes.map(m => `
+                <a href="javascript:void(0);" 
+                   class="mes-link ${m === mesSel ? 'active' : ''}" 
+                   onclick="mesSel='${m}'; renderizar()">${m}</a>
+            `).join('');
+
             const corpo = document.getElementById('corpoTabela');
             const filtrados = baseDeDados.filter(item => {
                 const parts = item.data.split('/');
@@ -106,13 +126,27 @@
                 const mIdx = parseInt(parts[1]) - 1;
                 return item.ano === anoSel && mesesNomes[mIdx] === mesSel;
             });
+
             if(filtrados.length > 0) {
-                corpo.innerHTML = filtrados.map(item => `<tr><td class="ps-4 fw-bold text-uppercase">${item.edicao}</td><td>${item.data}</td><td class="text-center"><a href="${item.link}" target="_blank" class="btn-visualizar"><i class="bi bi-search"></i> Abrir</a></td></tr>`).join('');
+                corpo.innerHTML = filtrados.map(item => `
+                    <tr>
+                        <td class="ps-4 fw-bold text-uppercase">${item.edicao}</td>
+                        <td>${item.data}</td>
+                        <td class="text-center">
+                            <a href="${item.link}" target="_blank" class="btn-visualizar">
+                                <i class="bi bi-search"></i> Abrir
+                            </a>
+                        </td>
+                    </tr>
+                `).join('');
             } else {
-                corpo.innerHTML = `<tr><td colspan="3" class="text-center p-5 text-muted fst-italic">Nenhuma edição encontrada para ${mesSel}/${anoSel}.</td></tr>`;
+                corpo.innerHTML = `<tr><td colspan="3" class="text-center p-5 text-muted fst-italic">
+                    Nenhuma edição digitalizada encontrada para ${mesSel}/${anoSel}.
+                </td></tr>`;
             }
         }
         renderizar();
+
         let iconIndex = 0;
         const icons = ['img/favicon1.png', 'img/favicon2.png'];
         function changeFavicon() {

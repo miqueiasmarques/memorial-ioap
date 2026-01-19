@@ -23,10 +23,13 @@
                 <i class="bi bi-list"></i> MENU DE NAVEGAÇÃO
             </button>
             <ul class="menu-lista" id="menuPrincipal">
-                <li><a class="nav-link" href="index.html">Início</a></li>
+                <!-- ATIVO AQUI -->
+                <li><a class="nav-link active" href="index.html">Início</a></li>
                 <li><a class="nav-link" href="noticias.html">Notícias</a></li> 
                 <li><a class="nav-link" href="acervo.html">Acervo Histórico</a></li>
                 <li><a class="nav-link" href="institucional.html">Institucional</a></li>
+                <!-- BOTÃO CORRIGIDO -->
+                <li><a class="nav-link" href="solicitacao.html">Solicitar Pesquisa</a></li>
                 <li><a class="nav-link" href="javascript:void(0);" onclick="abrirBusca()"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
@@ -34,23 +37,32 @@
         <div class="banner-id"></div>
 
         <div class="home-container">
+
             <div class="layout-grid">
-                <div class="coluna-hero">
-                    <div class="hero-card">
+                
+                <!-- ESQUERDA: DESTAQUE -->
+                <div class="hero-card">
+                    <a href="acervo.html" title="Clique para acessar o Acervo" style="display: block; width: 100%;">
                         <div class="hero-img-wrapper">
                             <img src="img/banner-vintage.png" alt="Acervo Digital" class="hero-img">
                         </div>
-                        <div class="hero-content">
-                            <span class="tag-destaque">Memória Viva</span>
-                            <h1>Resgate Histórico do Amapá</h1>
-                            <p>O <strong>Núcleo de Imprensa Oficial (NIO)</strong>, vinculado à Secretaria de Administração do Governo do Amapá, disponibiliza o acervo digitalizado de jornais históricos (1945–1974). Uma viagem no tempo através das páginas do Jornal Amapá e Novo Amapá.</p>
-                            <a href="acervo.html" class="btn-acessar">
-                                <i class="bi bi-collection"></i> ACESSAR ACERVO COMPLETO
-                            </a>
-                        </div>
+                    </a>
+
+                    <div class="hero-content">
+                        <span class="tag-destaque">Memória Viva</span>
+                        <h1>Resgate Histórico do Amapá</h1>
+                        
+                        <p>O <strong>Núcleo de Imprensa Oficial (NIO)</strong>, vinculado à Secretaria de Administração do Governo do Amapá, tem a honra de disponibilizar ao público o maior acervo digitalizado de jornais históricos da região. Esta iniciativa visa preservar a memória administrativa, política e cultural do estado.</p>
+                        
+                        <p>São décadas de história (1945–1974) acessíveis a um clique. Pesquisadores, estudantes e cidadãos podem agora consultar, na íntegra e com alta qualidade, as edições raras dos jornais oficiais <strong>Amapá</strong> e <strong>Novo Amapá</strong>, testemunhas oculares da transformação do Território Federal em Estado.</p>
+                        
+                        <a href="acervo.html" class="btn-acessar">
+                            <i class="bi bi-collection"></i> ACESSAR ACERVO COMPLETO
+                        </a>
                     </div>
                 </div>
 
+                <!-- DIREITA: LATERAL -->
                 <div class="coluna-lateral">
                     <div class="sidebar-widget">
                         <div class="doe-header">
@@ -61,33 +73,42 @@
                             <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
                         </a>
                         <a href="http://diofe.portal.ap.gov.br" target="_blank" class="btn-diario-oficial">
-                            <i class="bi bi-download"></i> BAIXAR EDIÇÃO
+                            <i class="bi bi-download"></i> BAIXAR ÚLTIMA EDIÇÃO
+                        </a>
+                        <a href="http://diofe.portal.ap.gov.br" target="_blank" class="link-secundario">
+                            Ir para o Portal da SEAD <i class="bi bi-box-arrow-up-right"></i>
                         </a>
                     </div>
+
                     <div class="sidebar-widget-clean">
                         <a href="https://wa.me/5596984002542" target="_blank" title="Fale conosco no WhatsApp">
                             <img src="img/banner-whatsapp.png" alt="WhatsApp NIO" class="img-zap-lateral">
                         </a>
                     </div>
                 </div>
+
             </div>
 
-            <div class="secao-noticias-full">
-                <h3 class="titulo-secao-home"><span>ÚLTIMAS NOTÍCIAS</span></h3>
+            <div class="secao-noticias">
+                <h3 class="titulo-secao-home">ÚLTIMAS NOTÍCIAS</h3>
+                
                 <div id="feedNoticias">
                     <div class="text-center p-5"><div class="spinner-border text-primary"></div></div>
                 </div>
+
                 <div class="text-center mt-5">
                     <a href="noticias.html" class="btn btn-outline-primary fw-bold px-5 py-2">VER TODAS AS NOTÍCIAS</a>
                 </div>
             </div>
-        </div>
+
+        </div> 
 
         <footer class="rodape-oficial">
             <img src="img/banner-governo-rodape.png" alt="Governo do Amapá" class="img-rodape">
         </footer>
     </div>
 
+    <!-- MODAL DE BUSCA -->
     <div id="modalBusca" class="modal-overlay">
         <div class="modal-box">
             <span class="modal-close" onclick="fecharBusca()">&times;</span>
@@ -106,7 +127,8 @@
 
         const feed = document.getElementById('feedNoticias');
         if(typeof baseNoticias !== 'undefined' && baseNoticias.length > 0) {
-            const destaques = baseNoticias.slice(0, 3); 
+            const destaques = baseNoticias.slice(0, 2); 
+            
             feed.innerHTML = destaques.map(n => `
                 <div class="card-portal">
                     <img src="${n.imagens[0]}" class="card-img-top" alt="${n.titulo}">
@@ -114,7 +136,7 @@
                         <span class="card-date"><i class="bi bi-calendar3"></i> ${n.data}</span>
                         <h4 class="card-title">${n.titulo}</h4>
                         <p class="card-text text-truncate" style="max-height: 4.5em; overflow: hidden;">${n.resumo}</p>
-                        <a href="noticias.html" class="card-link">Leia Mais <i class="bi bi-arrow-right"></i></a>
+                        <a href="noticias.html" class="card-link">LEIA MAIS <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </div>
             `).join('');
