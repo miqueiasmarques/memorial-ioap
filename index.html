@@ -23,13 +23,19 @@
                 <i class="bi bi-list"></i> MENU DE NAVEGAÇÃO
             </button>
             <ul class="menu-lista" id="menuPrincipal">
-                <!-- ATIVO AQUI -->
+                <!-- 1. HOME -->
                 <li><a class="nav-link active" href="index.html">Início</a></li>
-                <li><a class="nav-link" href="noticias.html">Notícias</a></li> 
+                
+                <!-- 2. SERVIÇOS -->
                 <li><a class="nav-link" href="acervo.html">Acervo Histórico</a></li>
-                <li><a class="nav-link" href="institucional.html">Institucional</a></li>
-                <!-- BOTÃO CORRIGIDO -->
                 <li><a class="nav-link" href="solicitacao.html">Solicitar Pesquisa</a></li>
+                <li><a class="nav-link" href="publique.html">Como Publicar</a></li>
+                
+                <!-- 3. INFORMAÇÕES -->
+                <li><a class="nav-link" href="noticias.html">Notícias</a></li> 
+                <li><a class="nav-link" href="institucional.html">Institucional</a></li>
+                
+                <!-- 4. BUSCA -->
                 <li><a class="nav-link" href="javascript:void(0);" onclick="abrirBusca()"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
@@ -69,14 +75,17 @@
                             <h3>DIÁRIO OFICIAL</h3>
                             <p class="doe-sub">Edições atuais e históricas</p>
                         </div>
-                        <a href="http://diofe.portal.ap.gov.br" target="_blank">
+                        
+                        <a href="http://diofe.portal.ap.gov.br" target="_blank" id="linkCapa">
                             <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
                         </a>
-                        <a href="http://diofe.portal.ap.gov.br" target="_blank" class="btn-diario-oficial">
+                        
+                        <a href="http://diofe.portal.ap.gov.br" target="_blank" class="btn-diario-oficial" id="btnDiario">
                             <i class="bi bi-download"></i> BAIXAR ÚLTIMA EDIÇÃO
                         </a>
-                        <a href="http://diofe.portal.ap.gov.br" target="_blank" class="link-secundario">
-                            Ir para o Portal da SEAD <i class="bi bi-box-arrow-up-right"></i>
+                        
+                        <a href="https://sead.portal.ap.gov.br/diario_oficial" target="_blank" class="link-secundario">
+                            Consultar Outras Edições <i class="bi bi-box-arrow-up-right"></i>
                         </a>
                     </div>
 
@@ -121,28 +130,47 @@
     </div>
 
     <script>
-        function toggleMenu() {
-            document.getElementById('menuPrincipal').classList.toggle('ativo');
+        function toggleMenu() { document.getElementById('menuPrincipal').classList.toggle('ativo'); }
+
+        async function atualizarBotaoDiario() {
+            const URL_API = 'https://script.google.com/macros/s/AKfycbwwEI9F6LFkqOqeoF4kKyARouJo-59C-34xhTWfL1bDD538muTldssosywD2G2CYyOpfA/exec';
+            
+            try {
+                const response = await fetch(URL_API + '?acao=link_diario');
+                const data = await response.json();
+
+                if (data.result === 'success' && data.link) {
+                    const btn = document.getElementById('btnDiario');
+                    const img = document.getElementById('linkCapa');
+                    btn.href = data.link;
+                    img.href = data.link;
+                    console.log("Diário atualizado:", data.link);
+                }
+            } catch (error) {
+                console.error("Erro ao buscar diário:", error);
+            }
         }
 
-        const feed = document.getElementById('feedNoticias');
-        if(typeof baseNoticias !== 'undefined' && baseNoticias.length > 0) {
-            const destaques = baseNoticias.slice(0, 2); 
-            
-            feed.innerHTML = destaques.map(n => `
-                <div class="card-portal">
-                    <img src="${n.imagens[0]}" class="card-img-top" alt="${n.titulo}">
-                    <div class="card-body">
-                        <span class="card-date"><i class="bi bi-calendar3"></i> ${n.data}</span>
-                        <h4 class="card-title">${n.titulo}</h4>
-                        <p class="card-text text-truncate" style="max-height: 4.5em; overflow: hidden;">${n.resumo}</p>
-                        <a href="noticias.html" class="card-link">LEIA MAIS <i class="bi bi-arrow-right"></i></a>
+        window.onload = function() {
+            atualizarBotaoDiario();
+            const feed = document.getElementById('feedNoticias');
+            if(typeof baseNoticias !== 'undefined' && baseNoticias.length > 0) {
+                const destaques = baseNoticias.slice(0, 2); 
+                feed.innerHTML = destaques.map(n => `
+                    <div class="card-portal">
+                        <img src="${n.imagens[0]}" class="card-img-top" alt="${n.titulo}">
+                        <div class="card-body">
+                            <span class="card-date"><i class="bi bi-calendar3"></i> ${n.data}</span>
+                            <h4 class="card-title">${n.titulo}</h4>
+                            <p class="card-text text-truncate" style="max-height: 4.5em; overflow: hidden;">${n.resumo}</p>
+                            <a href="noticias.html" class="card-link">LEIA MAIS <i class="bi bi-arrow-right"></i></a>
+                        </div>
                     </div>
-                </div>
-            `).join('');
-        } else {
-            feed.innerHTML = '<div class="alert alert-warning col-12">Nenhuma notícia encontrada.</div>';
-        }
+                `).join('');
+            } else {
+                feed.innerHTML = '<div class="alert alert-warning col-12">Nenhuma notícia encontrada.</div>';
+            }
+        };
 
         let iconIndex = 0;
         const icons = ['img/favicon1.png', 'img/favicon2.png'];
