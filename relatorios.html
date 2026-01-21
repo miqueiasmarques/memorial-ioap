@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios - NIO</title>
+    
+    <link rel="shortcut icon" href="img/favicon1.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .navbar-top { background-color: #002b5c; color: white; padding: 12px 20px; }
+        
+        .nav-link-custom { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 500; padding: 5px 10px; transition: 0.3s; }
+        .nav-link-custom:hover { color: white; }
+        .nav-link-custom.active { color: white; font-weight: 700; border-bottom: 2px solid #ffc107; }
+
+        @media (min-width: 993px) {
+            .navbar-menu-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; }
+        }
+        @media (max-width: 992px) {
+            .navbar-menu-center { display: flex; gap: 15px; font-size: 0.9rem; margin-top: 5px; width: 100%; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
+            .navbar-container { flex-wrap: wrap; }
+        }
+        .card { border-radius: 10px; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-top shadow-sm sticky-top">
+        <div class="container-fluid navbar-container d-flex justify-content-between align-items-center position-relative">
+            <span class="navbar-brand text-white fw-bold fs-6"><i class="bi bi-shield-lock-fill"></i> NIO INTERNO</span>
+            
+            <div class="navbar-menu-center">
+                <a class="nav-link-custom" href="painel.html">Pedidos</a>
+                <a class="nav-link-custom" href="referencias.html">Referências</a>
+                <a class="nav-link-custom active" href="relatorios.html">Relatórios</a>
+            </div>
+
+            <div class="d-flex align-items-center">
+                <span class="me-2 text-white small d-none d-sm-inline">Olá, <strong id="nomeUsuario">...</strong></span>
+                <button onclick="sair()" class="btn btn-sm btn-outline-light"><i class="bi bi-box-arrow-right"></i> Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3>📊 Dashboard de Produtividade</h3>
+            <button onclick="carregarDados()" class="btn btn-primary btn-sm"><i class="bi bi-arrow-clockwise"></i> Atualizar</button>
+        </div>
+
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-header bg-white fw-bold">Status dos Pedidos</div>
+                    <div class="card-body"><canvas id="graficoStatus"></canvas></div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="card h-100">
+                    <div class="card-header bg-white fw-bold">Volume de Pedidos (Últimos meses)</div>
+                    <div class="card-body"><canvas id="graficoLinha"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-3">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white text-center p-3">
+                    <h1 id="kpiTotal">0</h1><small>Total Geral</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white text-center p-3">
+                    <h1 id="kpiAtendidos">0%</h1><small>Taxa de Sucesso</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const URL_API = 'https://script.google.com/macros/s/AKfycbwwEI9F6LFkqOqeoF4kKyARouJo-59C-34xhTWfL1bDD538muTldssosywD2G2CYyOpfA/exec';
+        
+        const usuarioLogado = localStorage.getItem('nio_usuario');
+        if (!usuarioLogado) window.location.href = 'login.html';
+        document.getElementById('nomeUsuario').innerText = usuarioLogado;
+        function sair() { localStorage.clear(); window.location.href = 'login.html'; }
+
+        let chartStatus = null;
+        let chartLinha = null;
+
+        async function carregarDados() {
+            try {
+                const response = await fetch(URL_API + '?acao=listar_pedidos');
+                const data = await response.json();
+                if (data.result === 'success') { processarDados(data.pedidos); }
+            } catch (error) { alert("Erro ao carregar dados."); }
+        }
+
+        function processarDados(pedidos) {
+            let statusCount = { 'EM ANÁLISE': 0, 'ATENDIDO': 0, 'NÃO ENCONTRADO': 0 };
+            let datasCount = {};
+
+            pedidos.forEach(p => {
+                let s = p[6]; if(statusCount[s] !== undefined) statusCount[s]++; else statusCount[s] = 1;
+                
+                let dataStr = p[1].split(' ')[0];
+                let partes = dataStr.split('/');
+                if(partes.length === 3) {
+                    let chave = partes[1] + '/' + partes[2];
+                    datasCount[chave] = (datasCount[chave] || 0) + 1;
+                }
+            });
+
+            document.getElementById('kpiTotal').innerText = pedidos.length;
+            document.getElementById('kpiAtendidos').innerText = pedidos.length > 0 ? Math.round((statusCount['ATENDIDO'] / pedidos.length) * 100) + '%' : '0%';
+
+            renderizarGraficoStatus(statusCount);
+            renderizarGraficoLinha(datasCount);
+        }
+
+        function renderizarGraficoStatus(dados) {
+            const ctx = document.getElementById('graficoStatus').getContext('2d');
+            if(chartStatus) chartStatus.destroy();
+            chartStatus = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Em Análise', 'Atendido', 'Não Enc.'],
+                    datasets: [{
+                        data: [dados['EM ANÁLISE'], dados['ATENDIDO'], dados['NÃO ENCONTRADO']],
+                        backgroundColor: ['#ffc107', '#28a745', '#dc3545']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        function renderizarGraficoLinha(dados) {
+            const ctx = document.getElementById('graficoLinha').getContext('2d');
+            const labels = Object.keys(dados).reverse();
+            const valores = labels.map(l => dados[l]);
+            if(chartLinha) chartLinha.destroy();
+            chartLinha = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Pedidos',
+                        data: valores,
+                        borderColor: '#002b5c',
+                        backgroundColor: 'rgba(0, 43, 92, 0.1)',
+                        fill: true, tension: 0.3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        window.onload = carregarDados;
+    </script>
+</body>
+</html>

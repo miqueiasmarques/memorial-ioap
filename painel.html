@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - NIO</title>
+    
+    <link rel="shortcut icon" href="img/favicon1.png" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; }
+        .navbar-top { background-color: #002b5c; color: white; padding: 12px 20px; }
+        
+        /* MENU PADRONIZADO */
+        .nav-link-custom { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 500; padding: 5px 10px; transition: 0.3s; }
+        .nav-link-custom:hover { color: white; }
+        .nav-link-custom.active { color: white; font-weight: 700; border-bottom: 2px solid #ffc107; }
+
+        /* CARDS */
+        .card-resumo { border: none; border-radius: 12px; color: white; cursor: pointer; transition: transform 0.2s; position: relative; overflow: hidden; padding: 20px !important; }
+        .card-resumo:active { transform: scale(0.98); }
+        .card-resumo h3 { font-size: 2.5rem; margin: 0; font-weight: 800; }
+        .card-resumo small { font-size: 1.1rem; font-weight: 600; opacity: 0.95; display: block; margin-top: 5px; }
+
+        .bg-pendente { background: #ffc107; color: #333; }
+        .bg-atendido { background: #28a745; }
+        .bg-nao-encontrado { background: #dc3545; }
+        
+        /* MOBILE */
+        @media (max-width: 992px) {
+            .table thead { display: none; }
+            .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
+            .table tr { margin-bottom: 15px; background-color: #fff; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; overflow: hidden; }
+            .table td { text-align: right; padding: 10px 15px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+            .table td::before { content: attr(data-label); font-weight: 700; color: #666; text-transform: uppercase; font-size: 0.75rem; text-align: left; margin-right: 10px; }
+            .table td:last-child { border-bottom: none; background-color: #f8f9fa; justify-content: flex-end; }
+            .row-cards-mobile { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+            .col-md-3 { width: 100%; }
+            .card-resumo { padding: 15px !important; }
+            .card-resumo h3 { font-size: 1.8rem; }
+            .card-resumo small { font-size: 0.9rem; }
+            
+            /* Ajuste menu mobile para não quebrar */
+            .navbar-menu-center { display: flex; gap: 15px; font-size: 0.9rem; margin-top: 5px; width: 100%; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
+            .navbar-container { flex-wrap: wrap; }
+        }
+        
+        @media (min-width: 993px) {
+            /* No PC, o menu fica no centro absoluto */
+            .navbar-menu-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- BARRA SUPERIOR PADRONIZADA -->
+    <nav class="navbar navbar-top shadow-sm sticky-top">
+        <div class="container-fluid navbar-container d-flex justify-content-between align-items-center position-relative">
+            <!-- 1. Logo -->
+            <span class="navbar-brand text-white fw-bold fs-6"><i class="bi bi-shield-lock-fill"></i> NIO INTERNO</span>
+            
+            <!-- 2. Menu Central -->
+            <div class="navbar-menu-center">
+                <a class="nav-link-custom active" href="painel.html">Pedidos</a>
+                <a class="nav-link-custom" href="referencias.html">Referências</a>
+                <a class="nav-link-custom" href="relatorios.html">Relatórios</a>
+            </div>
+
+            <!-- 3. Usuário -->
+            <div class="d-flex align-items-center">
+                <span class="me-2 text-white small d-none d-sm-inline">Olá, <strong id="nomeUsuario">...</strong></span>
+                <button onclick="sair()" class="btn btn-sm btn-outline-light"><i class="bi bi-box-arrow-right"></i> Sair</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid mt-3">
+        <!-- CARDS DE RESUMO -->
+        <div class="row g-3 mb-3 row-cards-mobile">
+            <div class="col-md-3">
+                <div class="card card-resumo bg-pendente p-3 shadow-sm h-100" onclick="filtrarPorCard('EM ANÁLISE')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h3 id="totalAnalise">0</h3><small>Pendentes</small></div>
+                        <i class="bi bi-hourglass-split fs-1 opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-resumo bg-atendido p-3 shadow-sm h-100" onclick="filtrarPorCard('ATENDIDO')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h3 id="totalAtendidos">0</h3><small>Atendidos</small></div>
+                        <i class="bi bi-check-circle fs-1 opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-resumo bg-nao-encontrado p-3 shadow-sm h-100" onclick="filtrarPorCard('NÃO ENCONTRADO')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h3 id="totalNaoEnc">0</h3><small>Não Enc.</small></div>
+                        <i class="bi bi-x-circle fs-1 opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card card-resumo bg-primary p-3 shadow-sm h-100" onclick="filtrarPorCard('TODOS')">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div><h3 id="totalPedidos">0</h3><small>Total Geral</small></div>
+                        <i class="bi bi-list-task fs-1 opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BARRA DE FERRAMENTAS -->
+        <div class="card shadow-sm border-0 mb-3">
+            <div class="card-body p-3">
+                <div class="d-flex flex-column flex-md-row gap-2">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                        <input type="text" id="inputPesquisa" class="form-control border-start-0" placeholder="Buscar por nome, pesquisa ou período..." onkeyup="aplicarFiltros()">
+                    </div>
+                    <select id="filtroStatus" class="form-select" style="min-width: 160px;" onchange="aplicarFiltros()">
+                        <option value="EM ANÁLISE" selected>⚠️ Pendentes</option>
+                        <option value="TODOS">Status: Todos</option>
+                        <option value="ATENDIDO">✅ Atendidos</option>
+                        <option value="NÃO ENCONTRADO">❌ Não Enc.</option>
+                    </select>
+                    <button onclick="carregarPedidos()" class="btn btn-primary"><i class="bi bi-arrow-clockwise"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- LISTA DE PEDIDOS -->
+        <div id="containerLista">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Data</th>
+                            <th>Solicitante</th>
+                            <th>O que pesquisar?</th>
+                            <th>Período</th>
+                            <th>WhatsApp</th>
+                            <th>Status</th>
+                            <th>Resp.</th>
+                            <th class="text-end">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabelaPedidos">
+                        <tr><td colspan="8" class="text-center p-5"><div class="spinner-border text-primary"></div><br>Carregando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="pagination-container bg-white p-3 rounded shadow-sm d-flex justify-content-between align-items-center mt-3">
+                <span class="text-muted small">Pág <span id="paginaAtual">1</span></span>
+                <div>
+                    <button class="btn btn-sm btn-outline-secondary me-1" onclick="mudarPagina(-1)">Ant.</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="mudarPagina(1)">Prox.</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal fade" id="modalAtendimento" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">Atender Pedido</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="editId">
+                    <div class="mb-3">
+                        <label class="fw-bold small text-muted">NOVO STATUS</label>
+                        <select id="editStatus" class="form-select form-select-lg">
+                            <option value="ATENDIDO">✅ ATENDIDO</option>
+                            <option value="NÃO ENCONTRADO">❌ NÃO ENCONTRADO</option>
+                            <option value="EM ANÁLISE">⚠️ Devolver para Fila</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold small text-muted">OBSERVAÇÃO</label>
+                        <textarea id="editRetorno" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-success" onclick="salvarAlteracao()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const URL_API = 'https://script.google.com/macros/s/AKfycbwwEI9F6LFkqOqeoF4kKyARouJo-59C-34xhTWfL1bDD538muTldssosywD2G2CYyOpfA/exec';
+        let dadosGlobais = [], dadosFiltrados = [], paginaAtual = 1;
+        const itensPorPagina = 10;
+
+        const usuarioLogado = localStorage.getItem('nio_usuario');
+        if (!usuarioLogado) window.location.href = 'login.html';
+        document.getElementById('nomeUsuario').innerText = usuarioLogado;
+        function sair() { localStorage.clear(); window.location.href = 'login.html'; }
+
+        async function carregarPedidos() {
+            const tbody = document.getElementById('tabelaPedidos');
+            try {
+                const response = await fetch(URL_API + '?acao=listar_pedidos');
+                const data = await response.json();
+                if (data.result === 'success') {
+                    dadosGlobais = data.pedidos;
+                    atualizarContadores(dadosGlobais);
+                    aplicarFiltros();
+                } else alert('Erro ao carregar.');
+            } catch (error) {
+                console.error(error);
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Erro de conexão.</td></tr>';
+            }
+        }
+
+        function filtrarPorCard(status) {
+            document.getElementById('filtroStatus').value = status;
+            aplicarFiltros();
+        }
+
+        function aplicarFiltros() {
+            const termo = document.getElementById('inputPesquisa').value.toLowerCase();
+            const status = document.getElementById('filtroStatus').value;
+            dadosFiltrados = dadosGlobais.filter(p => {
+                const matchTexto = String(p[2]).toLowerCase().includes(termo) || String(p[3]).toLowerCase().includes(termo);
+                const matchStatus = status === 'TODOS' || p[6] === status;
+                return matchTexto && matchStatus;
+            });
+            paginaAtual = 1;
+            renderizarTabela();
+        }
+
+        function renderizarTabela() {
+            const tbody = document.getElementById('tabelaPedidos');
+            tbody.innerHTML = '';
+            const inicio = (paginaAtual - 1) * itensPorPagina;
+            const fim = inicio + itensPorPagina;
+            const paginaDados = dadosFiltrados.slice(inicio, fim);
+            
+            document.getElementById('paginaAtual').innerText = paginaAtual;
+            
+            if(paginaDados.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted p-4">Nenhum pedido encontrado.</td></tr>';
+                return;
+            }
+
+            paginaDados.forEach(p => {
+                let badge = p[6] === 'EM ANÁLISE' ? 'bg-warning text-dark' : (p[6] === 'ATENDIDO' ? 'bg-success' : 'bg-danger');
+                let zap = p[5] ? `https://wa.me/55${p[5].toString().replace(/\D/g,'')}` : '#';
+                
+                let tr = `<tr>
+                    <td data-label="Data"><small>${p[1]}</small></td>
+                    <td data-label="Solicitante" class="fw-bold text-primary">${p[2]}</td>
+                    <td data-label="Pesquisa"><span class="text-truncate d-block" style="max-width:200px">${p[3]}</span></td>
+                    <td data-label="Período">${p[4]}</td>
+                    <td data-label="Contato"><a href="${zap}" target="_blank" class="btn btn-outline-success btn-sm border-0"><i class="bi bi-whatsapp"></i></a></td>
+                    <td data-label="Status"><span class="badge ${badge}">${p[6]}</span></td>
+                    <td data-label="Resp."><small>${p[7]}</small></td>
+                    <td data-label="Ações" class="text-end"><button class="btn btn-primary btn-sm" onclick="abrirModal('${p[0]}','${p[6]}')">Atender</button></td>
+                </tr>`;
+                tbody.innerHTML += tr;
+            });
+        }
+
+        function mudarPagina(d) {
+            const total = Math.ceil(dadosFiltrados.length / itensPorPagina);
+            if (paginaAtual + d >= 1 && paginaAtual + d <= total) {
+                paginaAtual += d;
+                renderizarTabela();
+            }
+        }
+
+        function atualizarContadores(lista) {
+            document.getElementById('totalPedidos').innerText = lista.length;
+            document.getElementById('totalAnalise').innerText = lista.filter(p => p[6] === 'EM ANÁLISE').length;
+            document.getElementById('totalAtendidos').innerText = lista.filter(p => p[6] === 'ATENDIDO').length;
+            document.getElementById('totalNaoEnc').innerText = lista.filter(p => p[6] === 'NÃO ENCONTRADO').length;
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('modalAtendimento'));
+        function abrirModal(id, st) {
+            document.getElementById('editId').value = id;
+            document.getElementById('editStatus').value = st;
+            modal.show();
+        }
+
+        async function salvarAlteracao() {
+            const id = document.getElementById('editId').value;
+            const st = document.getElementById('editStatus').value;
+            const ret = document.getElementById('editRetorno').value;
+            const resp = localStorage.getItem('nio_usuario');
+            
+            try {
+                await fetch(URL_API, {
+                    method: 'POST', mode: 'no-cors',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({acao: 'atualizar_pedido', id: id, status: st, retorno: ret, responsavel: resp})
+                });
+                alert('Salvo!'); modal.hide(); carregarPedidos();
+            } catch(e) { alert('Erro ao salvar.'); }
+        }
+
+        window.onload = carregarPedidos;
+    </script>
+</body>
+</html>

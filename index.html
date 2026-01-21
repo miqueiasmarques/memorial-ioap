@@ -39,6 +39,7 @@
 
             <div class="layout-grid">
                 
+                <!-- ESQUERDA: DESTAQUE -->
                 <div class="hero-card">
                     <a href="acervo.html" title="Clique para acessar o Acervo" style="display: block; width: 100%;">
                         <div class="hero-img-wrapper">
@@ -60,6 +61,7 @@
                     </div>
                 </div>
 
+                <!-- DIREITA: LATERAL -->
                 <div class="coluna-lateral">
                     <div class="sidebar-widget">
                         <div class="doe-header">
@@ -71,6 +73,7 @@
                             <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
                         </a>
                         
+                        <!-- BOTÃO COM ID PARA ATUALIZAÇÃO -->
                         <a href="#" target="_blank" class="btn-diario-oficial" id="btnDiario">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             Buscando edição...
@@ -104,11 +107,25 @@
 
         </div> 
 
-        <footer class="rodape-oficial">
-            <img src="img/banner-governo-rodape.png" alt="Governo do Amapá" class="img-rodape">
+        <!-- RODAPÉ COM ACESSO RESTRITO -->
+        <footer class="rodape-oficial py-4">
+            <div class="container text-center">
+                <img src="img/banner-governo-rodape.png" alt="Governo do Amapá" class="img-rodape mb-3">
+                
+                <div class="mt-3 border-top pt-3">
+                    <a href="login.html" class="text-secondary text-decoration-none small fw-bold opacity-75" style="font-size: 0.8rem;">
+                        <i class="bi bi-shield-lock-fill"></i> Acesso Restrito ao Servidor
+                    </a>
+                </div>
+                
+                <div class="text-muted mt-2" style="font-size: 0.7rem;">
+                    &copy; 2026 Núcleo de Imprensa Oficial - Secretaria de Administração
+                </div>
+            </div>
         </footer>
     </div>
 
+    <!-- MODAL DE BUSCA -->
     <div id="modalBusca" class="modal-overlay">
         <div class="modal-box">
             <span class="modal-close" onclick="fecharBusca()">&times;</span>
