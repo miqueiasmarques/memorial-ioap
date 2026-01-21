@@ -15,20 +15,12 @@
     <script src="js/busca.js"></script>
     
     <style>
-        /* Ajuste fino para imagens de notícia */
         .foto-principal { 
-            width: 100%; 
-            height: 350px; 
-            object-fit: cover; 
-            border-radius: 8px; 
-            margin-bottom: 10px;
-            background-color: #eee; /* Cor de fundo caso a imagem falhe */
+            width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;
+            background-color: #eee; 
         }
         .foto-secundaria { 
-            width: 100%; 
-            height: 170px; 
-            object-fit: cover; 
-            border-radius: 8px; 
+            width: 100%; height: 170px; object-fit: cover; border-radius: 8px; 
             background-color: #eee;
         }
         
@@ -51,14 +43,12 @@
                 <li><a class="nav-link" href="acervo.html">Acervo Histórico</a></li>
                 <li><a class="nav-link" href="solicitacao.html">Solicitar Pesquisa</a></li>
                 <li><a class="nav-link" href="publique.html">Como Publicar</a></li>
-                <!-- ATIVO AQUI -->
                 <li><a class="nav-link active" href="noticias.html">Notícias</a></li>
                 <li><a class="nav-link" href="institucional.html">Institucional</a></li>
                 <li><a class="nav-link" href="javascript:void(0);" onclick="abrirBusca()"><i class="bi bi-search"></i> BUSCAR</a></li>
             </ul>
         </nav>
 
-        <!-- O BANNER QUE ESTAVA FALTANDO -->
         <div class="banner-id"></div>
 
         <main class="conteudo-noticias">
@@ -87,20 +77,15 @@
     </div>
 
     <script>
-        function toggleMenu() {
-            document.getElementById('menuPrincipal').classList.toggle('ativo');
-        }
+        function toggleMenu() { document.getElementById('menuPrincipal').classList.toggle('ativo'); }
 
         const container = document.getElementById('containerNoticias');
         
-        // Verifica se o arquivo de notícias carregou
         if(typeof baseNoticias !== 'undefined' && baseNoticias.length > 0) {
             container.innerHTML = baseNoticias.map(n => `
                 <div class="row g-4 mb-5 align-items-start border-bottom pb-4">
                     <div class="col-md-6">
-                        <!-- Verifica se existe imagem antes de tentar carregar -->
                         <img src="${n.imagens[0] || 'img/banner-topo.png'}" class="foto-principal shadow-sm" alt="${n.titulo}" onerror="this.style.display='none'">
-                        
                         ${n.imagens.length > 1 ? `
                         <div class="row g-2">
                             <div class="col-6"><img src="${n.imagens[1]}" class="foto-secundaria shadow-sm" onerror="this.style.display='none'"></div>

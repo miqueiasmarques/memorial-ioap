@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/estilo.css">
     
+    <!-- DADOS.JS É OBRIGATÓRIO AQUI -->
     <script src="js/dados.js"></script>
     <script src="js/busca.js"></script>
 </head>
 <body>
 
     <div class="caixa-central">
-        <div class="topo-banner"></div>
+        <div class="topo-container"><div class="topo-banner"></div></div>
         
         <nav class="navbar-gov">
             <button class="btn-menu-mobile" onclick="toggleMenu()">
@@ -89,7 +90,7 @@
 
         function renderizar() {
             if(typeof baseDeDados === 'undefined') {
-                document.getElementById('gridAnos').innerHTML = '<div class="alert alert-danger">Erro: Dados não carregados.</div>';
+                document.getElementById('gridAnos').innerHTML = '<div class="alert alert-danger">Erro: O arquivo de dados (js/dados.js) não foi carregado corretamente.</div>';
                 return;
             }
 

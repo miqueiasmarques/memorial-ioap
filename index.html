@@ -23,7 +23,6 @@
                 <i class="bi bi-list"></i> MENU DE NAVEGAÇÃO
             </button>
             <ul class="menu-lista" id="menuPrincipal">
-                <!-- ATIVO AQUI -->
                 <li><a class="nav-link active" href="index.html">Início</a></li>
                 <li><a class="nav-link" href="acervo.html">Acervo Histórico</a></li>
                 <li><a class="nav-link" href="solicitacao.html">Solicitar Pesquisa</a></li>
@@ -40,7 +39,6 @@
 
             <div class="layout-grid">
                 
-                <!-- ESQUERDA: DESTAQUE -->
                 <div class="hero-card">
                     <a href="acervo.html" title="Clique para acessar o Acervo" style="display: block; width: 100%;">
                         <div class="hero-img-wrapper">
@@ -62,7 +60,6 @@
                     </div>
                 </div>
 
-                <!-- DIREITA: LATERAL -->
                 <div class="coluna-lateral">
                     <div class="sidebar-widget">
                         <div class="doe-header">
@@ -74,8 +71,6 @@
                             <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
                         </a>
                         
-                        <!-- BOTÃO COM ID PARA ATUALIZAÇÃO -->
-                        <!-- O href inicial é '#' para não levar a lugar errado antes de carregar -->
                         <a href="#" target="_blank" class="btn-diario-oficial" id="btnDiario">
                             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                             Buscando edição...
@@ -114,7 +109,6 @@
         </footer>
     </div>
 
-    <!-- MODAL DE BUSCA -->
     <div id="modalBusca" class="modal-overlay">
         <div class="modal-box">
             <span class="modal-close" onclick="fecharBusca()">&times;</span>
@@ -131,13 +125,11 @@
             document.getElementById('menuPrincipal').classList.toggle('ativo');
         }
 
-        // --- ATUALIZAÇÃO AUTOMÁTICA DO DIÁRIO (CORRIGIDA) ---
         async function atualizarBotaoDiario() {
             const URL_API = 'https://script.google.com/macros/s/AKfycbwwEI9F6LFkqOqeoF4kKyARouJo-59C-34xhTWfL1bDD538muTldssosywD2G2CYyOpfA/exec';
             const btn = document.getElementById('btnDiario');
             const img = document.getElementById('linkCapa');
 
-            // 1. Bloqueia o clique enquanto carrega
             btn.style.pointerEvents = 'none'; 
             btn.style.opacity = '0.7';
 
@@ -146,21 +138,16 @@
                 const data = await response.json();
 
                 if (data.result === 'success' && data.link) {
-                    // 2. Atualiza o link e libera o botão
                     btn.href = data.link;
                     img.href = data.link;
-                    
-                    // Muda o texto para mostrar que atualizou
                     btn.innerHTML = '<i class="bi bi-download"></i> BAIXAR EDIÇÃO DE HOJE';
                     console.log("Diário atualizado:", data.link);
                 }
             } catch (error) {
                 console.error("Erro ao buscar diário:", error);
-                // Em caso de erro, define o link padrão e libera
                 btn.href = "http://diofe.portal.ap.gov.br";
                 btn.innerHTML = '<i class="bi bi-download"></i> IR PARA O PORTAL';
             } finally {
-                // 3. Libera o clique independente do resultado
                 btn.style.pointerEvents = 'auto';
                 btn.style.opacity = '1';
             }

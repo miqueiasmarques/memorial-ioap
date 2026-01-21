@@ -1,27 +1,19 @@
-/* js/estilo.css - VERSÃO FINAL (Menu Compacto + Responsivo) */
+/* js/estilo.css - VERSÃO FINAL (Menu Compacto) */
 
-/* 1. IMPORTAÇÃO DAS FONTES */
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700;800&family=Roboto:wght@400;500&display=swap');
 
-/* --- VARIÁVEIS --- */
 :root { 
     --azul: #002b5c; 
     --ouro: #c5a059; 
     --verde: #29a771; 
     --fundo: #f2f4f5; 
-    
     --fonte-titulo: 'Raleway', sans-serif;
     --fonte-corpo: 'Roboto', sans-serif;
 }
 
-/* --- REGRA DE OURO --- */
 * { box-sizing: border-box; }
 
-html, body { 
-    overflow-x: hidden; 
-    width: 100%;
-    margin: 0; padding: 0;
-}
+html, body { overflow-x: hidden; width: 100%; margin: 0; padding: 0; }
 
 body { 
     background-color: var(--fundo); 
@@ -30,34 +22,30 @@ body {
     color: #333;
 }
 
-h1, h2, h3, h4, h5, .titulo-pg, .titulo-secao, .btn-acessar, .nav-link, .btn-diario-oficial {
-    font-family: var(--fonte-titulo);
-}
+h1, h2, h3, h4, h5, .titulo-pg, .titulo-secao, .btn-acessar, .nav-link, .btn-diario-oficial { font-family: var(--fonte-titulo); }
 
 img { max-width: 100% !important; height: auto; display: block; }
 a { text-decoration: none; }
 
-/* --- ESTRUTURA PRINCIPAL --- */
 .caixa-central { 
     width: 100%; max-width: 1200px; display: block; margin: 0 auto; text-align: left; 
     vertical-align: top; background-color: white; box-shadow: 0 0 20px rgba(0,0,0,0.1);
     min-height: 100vh; overflow: hidden;
 }
 
-/* --- TOPO --- */
 .topo-container { background-color: white; width: 100%; }
 .topo-banner { width: 100%; height: 180px; background: url('../img/banner-topo.png') no-repeat center; background-size: cover; }
 .banner-id { width: 100%; height: 100px; background: url('../img/banner-id.png') no-repeat center; background-size: cover; margin-top: -1px; }
 
-/* --- MENU (AJUSTADO PARA SER MAIS COMPACTO) --- */
+/* --- MENU COMPACTO --- */
 .navbar-gov { background-color: var(--azul); border-bottom: 4px solid var(--ouro); width: 100%; position: relative; }
 .menu-lista { display: flex; list-style: none; margin: 0; padding: 0; flex-wrap: wrap; align-items: center; width: 100%; }
 
-/* Reduzi o padding de 15px 25px para 12px 18px e a fonte para 0.85rem */
+/* Padding reduzido para caber tudo na linha */
 .nav-link { 
     color: white !important; 
     font-weight: 700; 
-    padding: 12px 18px !important; 
+    padding: 14px 18px !important; 
     text-transform: uppercase; 
     font-size: 0.85rem; 
     display: block; 
@@ -65,26 +53,19 @@ a { text-decoration: none; }
     border-right: 1px solid rgba(255,255,255,0.05); 
 }
 .nav-link:hover { background: rgba(255,255,255,0.1); }
-
-.nav-link.active {
-    background-color: rgba(255, 255, 255, 0.15); 
-    color: var(--ouro) !important; 
-    border-bottom: 3px solid var(--ouro); 
-}
+.nav-link.active { background-color: rgba(255, 255, 255, 0.15); color: var(--ouro) !important; border-bottom: 3px solid var(--ouro); }
 
 .menu-lista li:last-child { margin-left: auto; border-left: 1px solid rgba(255,255,255,0.1); border-right: none; }
 .btn-menu-mobile { display: none; width: 100%; background: var(--azul); color: white; border: none; padding: 15px; font-weight: 800; text-transform: uppercase; cursor: pointer; text-align: center; }
 
-/* --- LAYOUT GERAL --- */
+/* --- LAYOUT --- */
 .home-container { padding: 40px; }
 .layout-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px; align-items: stretch; }
 .coluna-lateral { display: flex; flex-direction: column; gap: 20px; justify-content: space-between; }
 
-/* --- HERO CARD --- */
 .hero-card { background: linear-gradient(135deg, var(--azul) 0%, #001a4d 100%); color: white; border-radius: 8px; overflow: hidden; height: 100%; display: flex; flex-direction: column; box-shadow: 0 4px 15px rgba(0,0,0,0.15); }
 .hero-img-wrapper { background-color: #fff; border-bottom: 5px solid var(--ouro); display: flex; flex-grow: 1; min-height: 200px; }
 .hero-img { width: 100%; height: 100%; object-fit: cover; object-position: top center; }
-.hero-card:hover .hero-img { transform: scale(1.05); transition: transform 0.5s; }
 .hero-content { flex-shrink: 0; flex-grow: 0; padding: 25px 30px; text-align: left; display: flex; flex-direction: column; justify-content: center; }
 .tag-destaque { background-color: var(--ouro); color: var(--azul); font-weight: 800; text-transform: uppercase; font-size: 0.7rem; padding: 3px 8px; border-radius: 3px; display: inline-block; margin-bottom: 10px; }
 .hero-content h1 { font-size: 1.8rem; margin-bottom: 10px; line-height: 1.2; color: white; }
@@ -92,7 +73,6 @@ a { text-decoration: none; }
 .btn-acessar { background-color: var(--verde); color: white; font-weight: bold; padding: 10px 20px; border-radius: 4px; text-align: center; width: fit-content; transition: 0.3s; font-size: 0.9rem; text-transform: uppercase; margin-top: 10px; }
 .btn-acessar:hover { background-color: #218c5e; color: white; }
 
-/* --- SIDEBAR --- */
 .sidebar-widget { background: white; border: 1px solid #ddd; border-top: 5px solid var(--azul); padding: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 .doe-header h3 { font-size: 1.1rem; color: var(--azul); font-weight: 800; margin-bottom: 5px; text-transform: uppercase; }
 .doe-sub { font-size: 0.8rem; color: #666; margin-bottom: 20px; }
@@ -105,7 +85,6 @@ a { text-decoration: none; }
 .img-zap-lateral { width: 100%; height: auto; object-fit: contain; border-radius: 8px; transition: transform 0.2s; display: block; }
 .img-zap-lateral:hover { transform: scale(1.02); }
 
-/* --- NOTÍCIAS --- */
 .secao-noticias { border-top: 2px solid #eee; padding-top: 30px; }
 .titulo-secao-home { font-size: 1.5rem; color: var(--azul); font-weight: 800; margin-bottom: 20px; border-left: 5px solid var(--ouro); padding-left: 15px; text-align: left; text-transform: uppercase; }
 #feedNoticias { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
@@ -118,7 +97,6 @@ a { text-decoration: none; }
 .card-text { font-size: 0.9rem; color: #555; margin-bottom: 15px; flex-grow: 1; }
 .card-link { color: var(--verde); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; margin-top: auto; }
 
-/* --- MODAL --- */
 .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); z-index: 9999; backdrop-filter: blur(5px); animation: fadeIn 0.3s; }
 .modal-box { background: white; width: 90%; max-width: 600px; margin: 80px auto; padding: 30px; border-radius: 10px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.3); text-align: center; }
 .modal-close { position: absolute; top: 15px; right: 20px; font-size: 2rem; cursor: pointer; color: #999; }
@@ -133,7 +111,6 @@ a { text-decoration: none; }
 .btn-ir { background: var(--verde); color: white; padding: 5px 15px; border-radius: 20px; font-size: 0.8rem; }
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-/* --- GERAL PÁGINAS INTERNAS --- */
 .conteudo-principal, .conteudo-noticias { padding: 40px; }
 .titulo-pg, .titulo-secao { color: var(--azul); border-left: 6px solid var(--verde); padding-left: 15px; font-weight: 700; margin-bottom: 30px; text-align: left; }
 .grid-anos { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; background: #f8f9fa; padding: 25px; border-radius: 8px; border: 1px solid #eee; margin-bottom: 40px; }
@@ -145,12 +122,11 @@ a { text-decoration: none; }
 .mes-link.active { color: var(--verde); border-bottom: 4px solid var(--verde); }
 .table thead { background-color: var(--verde); color: white; }
 .btn-visualizar { background-color: var(--verde); color: white; border: none; border-radius: 50px; padding: 6px 30px; text-decoration: none; display: inline-block; font-weight: bold; }
-.foto-principal { width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
-.foto-secundaria { width: 100%; height: 170px; object-fit: cover; border-radius: 8px; }
+.foto-principal { width: 100%; height: 350px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background-color: #eee; }
+.foto-secundaria { width: 100%; height: 170px; object-fit: cover; border-radius: 8px; background-color: #eee; }
 .rodape-oficial { width: 100%; background-color: #ffffff; border-top: 5px solid var(--azul); box-shadow: 0 -3px 10px rgba(0,0,0,0.03); text-align: center; padding: 20px 0; }
 .img-rodape { max-width: 100%; height: auto; max-height: 150px; display: inline-block; }
 
-/* --- MOBILE --- */
 @media (max-width: 992px) {
     .topo-banner { height: 120px; background-size: contain; background-position: center; background-color: white; }
     .banner-id { height: 60px; background-size: contain; }
