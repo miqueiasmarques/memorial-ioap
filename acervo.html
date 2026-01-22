@@ -16,7 +16,7 @@
 <body>
 
     <div class="caixa-central">
-        <div class="topo-banner"></div>
+        <div class="topo-container"><div class="topo-banner"></div></div>
         
         <nav class="navbar-gov">
             <button class="btn-menu-mobile" onclick="toggleMenu()">
@@ -37,20 +37,20 @@
 
         <main class="conteudo-principal">
             <h2 class="titulo-pg">ACERVO HISTÓRICO DIGITAL</h2>
-            <p class="text-muted mb-4">Consulte as edições digitalizadas do <strong>Jornal Amapá</strong> e <strong>Novo Amapá</strong> (1945 — 1974).</p>
+            <p class="text-muted mb-4 fs-5">Consulte as edições digitalizadas do <strong>Jornal Amapá</strong> e <strong>Novo Amapá</strong> (1945 — 1974).</p>
 
             <div class="grid-anos" id="gridAnos">Carregando...</div>
 
-            <div class="container-tabela shadow-sm">
+            <div class="container-tabela shadow-sm mt-5">
                 <div class="header-tabela">
                     <i class="bi bi-folder2-open fs-3 me-3"></i>
-                    <h5 class="m-0 fw-bold">Jornais de <span id="txtAnoNav">1945</span></h5>
+                    <h5 class="m-0 fw-bold text-uppercase">Jornais de <span id="txtAnoNav">1945</span></h5>
                 </div>
 
                 <div class="mes-nav" id="navMeses"></div>
 
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle">
+                    <table class="table table-hover align-middle mb-0">
                         <thead>
                             <tr>
                                 <th class="ps-4">EDIÇÃO</th>
@@ -67,13 +67,11 @@
         <footer class="rodape-oficial py-4">
             <div class="container text-center">
                 <img src="img/banner-governo-rodape.png" alt="Governo do Amapá" class="img-rodape mb-3">
-                
                 <div class="mt-3 border-top pt-3">
                     <a href="login.html" class="text-secondary text-decoration-none small fw-bold opacity-75" style="font-size: 0.8rem;">
                         <i class="bi bi-shield-lock-fill"></i> Acesso Restrito ao Servidor
                     </a>
                 </div>
-                
                 <div class="text-muted mt-2" style="font-size: 0.7rem;">
                     &copy; 2026 Núcleo de Imprensa Oficial - Secretaria de Administração
                 </div>
@@ -109,6 +107,7 @@
             divAnos.innerHTML = '';
             for(let i=1945; i<=1974; i++) {
                 const btn = document.createElement('button');
+                // Aplica classes específicas para o CSS funcionar
                 btn.className = `btn btn-sm btn-ano ${i === anoSel ? 'btn-dark' : 'btn-outline-dark'}`;
                 btn.innerText = i;
                 btn.onclick = () => { 

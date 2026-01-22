@@ -66,22 +66,24 @@
                     <div class="sidebar-widget">
                         <div class="doe-header">
                             <h3>DIÁRIO OFICIAL</h3>
-                            <p class="doe-sub">Edições atuais e históricas</p>
+                            <p class="doe-sub">Todas as edições</p>
                         </div>
                         
-                        <a href="http://diofe.portal.ap.gov.br" target="_blank" id="linkCapa">
-                            <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
-                        </a>
-                        
-                        <!-- BOTÃO COM ID PARA ATUALIZAÇÃO -->
-                        <a href="#" target="_blank" class="btn-diario-oficial" id="btnDiario">
-                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                            Buscando edição...
-                        </a>
-                        
-                        <a href="https://sead.portal.ap.gov.br/diario_oficial" target="_blank" class="link-secundario">
-                            Consultar Outras Edições <i class="bi bi-box-arrow-up-right"></i>
-                        </a>
+                        <div class="doe-body">
+                            <a href="http://diofe.portal.ap.gov.br" target="_blank" id="linkCapa">
+                                <img src="img/capa-diario.png" alt="Capa DOE" class="doe-capa">
+                            </a>
+                            
+                            <!-- BOTÃO COM ID PARA ATUALIZAÇÃO -->
+                            <a href="#" target="_blank" class="btn-diario-oficial" id="btnDiario">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" id="loaderBtn"></span>
+                                Buscando edição...
+                            </a>
+                            
+                            <a href="https://sead.portal.ap.gov.br/diario_oficial" target="_blank" class="link-secundario">
+                                Consultar acervo completo <i class="bi bi-box-arrow-up-right"></i>
+                            </a>
+                        </div>
                     </div>
 
                     <div class="sidebar-widget-clean">
@@ -143,30 +145,42 @@
         }
 
         async function atualizarBotaoDiario() {
+            // URL DO SCRIPT DO GOOGLE (Verifique se é o mesmo que você implantou)
             const URL_API = 'https://script.google.com/macros/s/AKfycbwwEI9F6LFkqOqeoF4kKyARouJo-59C-34xhTWfL1bDD538muTldssosywD2G2CYyOpfA/exec';
+            
             const btn = document.getElementById('btnDiario');
-            const img = document.getElementById('linkCapa');
+            const linkCapa = document.getElementById('linkCapa');
+            const loader = document.getElementById('loaderBtn');
 
-            btn.style.pointerEvents = 'none'; 
             btn.style.opacity = '0.7';
+            btn.style.pointerEvents = 'none';
 
             try {
                 const response = await fetch(URL_API + '?acao=link_diario');
                 const data = await response.json();
 
-                if (data.result === 'success' && data.link) {
+                // Verifica se tem link e se é um link válido (contém 'http')
+                if (data.result === 'success' && data.link && data.link.includes('http')) {
                     btn.href = data.link;
-                    img.href = data.link;
-                    btn.innerHTML = '<i class="bi bi-download"></i> BAIXAR EDIÇÃO DE HOJE';
-                    console.log("Diário atualizado:", data.link);
+                    linkCapa.href = data.link;
+                    
+                    // TEXTO FINAL AJUSTADO:
+                    btn.innerHTML = '<i class="bi bi-download"></i> BAIXAR ÚLTIMA EDIÇÃO';
+                    
+                    // Garante cor verde
+                    btn.style.backgroundColor = '#28a745'; 
+                    console.log("Diário encontrado:", data.link);
+                } else {
+                    throw new Error("Link vazio ou inválido");
                 }
             } catch (error) {
-                console.error("Erro ao buscar diário:", error);
+                console.error("Erro ou link não encontrado:", error);
                 btn.href = "http://diofe.portal.ap.gov.br";
-                btn.innerHTML = '<i class="bi bi-download"></i> IR PARA O PORTAL';
+                btn.innerHTML = '<i class="bi bi-box-arrow-in-right"></i> IR PARA O PORTAL';
             } finally {
-                btn.style.pointerEvents = 'auto';
+                if(loader) loader.style.display = 'none'; // Remove spinner se ainda estiver lá
                 btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
             }
         }
 

@@ -8,67 +8,41 @@
     <link rel="shortcut icon" href="img/favicon1.png" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/estilo.css">
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     
     <style>
-        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; padding-bottom: 80px; }
-        .navbar-top { background-color: #002b5c; color: white; padding: 12px 20px; }
-        
-        /* MENU PADRONIZADO */
-        .nav-link-custom { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 500; padding: 5px 10px; transition: 0.3s; }
-        .nav-link-custom:hover { color: white; }
-        .nav-link-custom.active { color: white; font-weight: 700; border-bottom: 2px solid #ffc107; }
-
-        /* CARDS */
-        .card-resumo { border: none; border-radius: 12px; color: white; cursor: pointer; transition: transform 0.2s; position: relative; overflow: hidden; padding: 20px !important; }
-        .card-resumo:active { transform: scale(0.98); }
-        .card-resumo h3 { font-size: 2.5rem; margin: 0; font-weight: 800; }
-        .card-resumo small { font-size: 1.1rem; font-weight: 600; opacity: 0.95; display: block; margin-top: 5px; }
-
-        .bg-pendente { background: #ffc107; color: #333; }
-        .bg-atendido { background: #28a745; }
-        .bg-nao-encontrado { background: #dc3545; }
-        
-        /* MOBILE */
+        /* Ajustes específicos do Painel */
+        @media (min-width: 993px) {
+            .navbar-menu-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; }
+        }
         @media (max-width: 992px) {
-            .table thead { display: none; }
-            .table, .table tbody, .table tr, .table td { display: block; width: 100%; }
-            .table tr { margin-bottom: 15px; background-color: #fff; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid #e0e0e0; overflow: hidden; }
-            .table td { text-align: right; padding: 10px 15px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
-            .table td::before { content: attr(data-label); font-weight: 700; color: #666; text-transform: uppercase; font-size: 0.75rem; text-align: left; margin-right: 10px; }
-            .table td:last-child { border-bottom: none; background-color: #f8f9fa; justify-content: flex-end; }
-            .row-cards-mobile { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-            .col-md-3 { width: 100%; }
-            .card-resumo { padding: 15px !important; }
-            .card-resumo h3 { font-size: 1.8rem; }
-            .card-resumo small { font-size: 0.9rem; }
-            
-            /* Ajuste menu mobile para não quebrar */
             .navbar-menu-center { display: flex; gap: 15px; font-size: 0.9rem; margin-top: 5px; width: 100%; justify-content: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; }
             .navbar-container { flex-wrap: wrap; }
-        }
-        
-        @media (min-width: 993px) {
-            /* No PC, o menu fica no centro absoluto */
-            .navbar-menu-center { position: absolute; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; }
+            /* Tabela em Cards no Mobile */
+            .table thead { display: none; }
+            .table tr { display: block; margin-bottom: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); border: 1px solid #eee; }
+            .table td { display: block; text-align: right; border-bottom: 1px solid #f0f0f0; position: relative; padding-left: 35%; padding-top: 10px; padding-bottom: 10px; }
+            .table td::before { content: attr(data-label); position: absolute; left: 15px; font-weight: bold; color: #666; text-transform: uppercase; font-size: 0.75rem; top: 12px; text-align: left; width: 30%; }
+            .table td:last-child { border-bottom: none; text-align: center; padding-left: 0; background-color: #fcfcfc; }
+            .btn-copy-wrapper { justify-content: flex-end; }
         }
     </style>
 </head>
 <body>
 
-    <!-- BARRA SUPERIOR PADRONIZADA -->
     <nav class="navbar navbar-top shadow-sm sticky-top">
         <div class="container-fluid navbar-container d-flex justify-content-between align-items-center position-relative">
-            <!-- 1. Logo -->
             <span class="navbar-brand text-white fw-bold fs-6"><i class="bi bi-shield-lock-fill"></i> NIO INTERNO</span>
             
-            <!-- 2. Menu Central -->
             <div class="navbar-menu-center">
                 <a class="nav-link-custom active" href="painel.html">Pedidos</a>
                 <a class="nav-link-custom" href="referencias.html">Referências</a>
                 <a class="nav-link-custom" href="relatorios.html">Relatórios</a>
             </div>
 
-            <!-- 3. Usuário -->
             <div class="d-flex align-items-center">
                 <span class="me-2 text-white small d-none d-sm-inline">Olá, <strong id="nomeUsuario">...</strong></span>
                 <button onclick="sair()" class="btn btn-sm btn-outline-light"><i class="bi bi-box-arrow-right"></i> Sair</button>
@@ -76,120 +50,166 @@
         </div>
     </nav>
 
-    <div class="container-fluid mt-3">
-        <!-- CARDS DE RESUMO -->
-        <div class="row g-3 mb-3 row-cards-mobile">
-            <div class="col-md-3">
-                <div class="card card-resumo bg-pendente p-3 shadow-sm h-100" onclick="filtrarPorCard('EM ANÁLISE')">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div><h3 id="totalAnalise">0</h3><small>Pendentes</small></div>
-                        <i class="bi bi-hourglass-split fs-1 opacity-25"></i>
-                    </div>
+    <div class="container-fluid mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold text-secondary m-0">Gestão de Pedidos</h4>
+                <div class="d-flex align-items-center gap-2">
+                    <small class="text-muted" id="statusAuto">Aguardando atualização...</small>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card-resumo bg-atendido p-3 shadow-sm h-100" onclick="filtrarPorCard('ATENDIDO')">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div><h3 id="totalAtendidos">0</h3><small>Atendidos</small></div>
-                        <i class="bi bi-check-circle fs-1 opacity-25"></i>
-                    </div>
+            <button class="btn btn-success fw-bold shadow-sm px-3 py-2" onclick="abrirModalNovo()">
+                <i class="bi bi-plus-lg"></i> <span class="d-none d-sm-inline ms-1">Novo Pedido</span>
+            </button>
+        </div>
+
+        <div class="row g-2 g-md-4 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="card card-resumo bg-pendente shadow-sm" onclick="filtrarPorCard('EM ANÁLISE')">
+                    <h3 id="totalAnalise">0</h3><small>Pendentes</small><i class="bi bi-hourglass-split icone-card"></i>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card-resumo bg-nao-encontrado p-3 shadow-sm h-100" onclick="filtrarPorCard('NÃO ENCONTRADO')">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div><h3 id="totalNaoEnc">0</h3><small>Não Enc.</small></div>
-                        <i class="bi bi-x-circle fs-1 opacity-25"></i>
-                    </div>
+            <div class="col-6 col-md-3">
+                <div class="card card-resumo bg-atendido shadow-sm" onclick="filtrarPorCard('ATENDIDO')">
+                    <h3 id="totalAtendidos">0</h3><small>Atendidos</small><i class="bi bi-check-circle icone-card"></i>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card card-resumo bg-primary p-3 shadow-sm h-100" onclick="filtrarPorCard('TODOS')">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div><h3 id="totalPedidos">0</h3><small>Total Geral</small></div>
-                        <i class="bi bi-list-task fs-1 opacity-25"></i>
-                    </div>
+            <div class="col-6 col-md-3">
+                <div class="card card-resumo bg-nao-encontrado shadow-sm" onclick="filtrarPorCard('NÃO ENCONTRADO')">
+                    <h3 id="totalNaoEnc">0</h3><small>Não Enc.</small><i class="bi bi-x-circle icone-card"></i>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card card-resumo bg-total shadow-sm" onclick="filtrarPorCard('TODOS')">
+                    <h3 id="totalPedidos">0</h3><small>Total Geral</small><i class="bi bi-list-task icone-card"></i>
                 </div>
             </div>
         </div>
 
-        <!-- BARRA DE FERRAMENTAS -->
         <div class="card shadow-sm border-0 mb-3">
-            <div class="card-body p-3">
-                <div class="d-flex flex-column flex-md-row gap-2">
-                    <div class="input-group">
-                        <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-                        <input type="text" id="inputPesquisa" class="form-control border-start-0" placeholder="Buscar por nome, pesquisa ou período..." onkeyup="aplicarFiltros()">
+            <div class="card-body p-2 p-md-3">
+                <div class="row g-2 align-items-center">
+                    <div class="col-12 col-md">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                            <input type="text" id="inputPesquisa" class="form-control border-start-0" placeholder="Buscar por nome, ano ou assunto..." onkeyup="aplicarFiltros()">
+                        </div>
                     </div>
-                    <select id="filtroStatus" class="form-select" style="min-width: 160px;" onchange="aplicarFiltros()">
-                        <option value="EM ANÁLISE" selected>⚠️ Pendentes</option>
-                        <option value="TODOS">Status: Todos</option>
-                        <option value="ATENDIDO">✅ Atendidos</option>
-                        <option value="NÃO ENCONTRADO">❌ Não Enc.</option>
-                    </select>
-                    <button onclick="carregarPedidos()" class="btn btn-primary"><i class="bi bi-arrow-clockwise"></i></button>
+                    <div class="col-8 col-md-auto">
+                        <select id="filtroStatus" class="form-select w-100" onchange="aplicarFiltros()">
+                            <option value="EM ANÁLISE" selected>⚠️ Mostrar Pendentes</option>
+                            <option value="TODOS">📋 Mostrar Todos</option>
+                            <option value="ATENDIDO">✅ Mostrar Atendidos</option>
+                            <option value="NÃO ENCONTRADO">❌ Mostrar Não Enc.</option>
+                        </select>
+                    </div>
+                    <div class="col-4 col-md-auto">
+                        <button onclick="carregarPedidos()" class="btn btn-primary w-100" title="Forçar Atualização">
+                            <i class="bi bi-arrow-clockwise"></i> <span class="d-none d-md-inline">Atualizar</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- LISTA DE PEDIDOS -->
         <div id="containerLista">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
+                <table class="table table-hover mb-0 bg-white shadow-sm rounded align-middle">
                     <thead class="table-light">
                         <tr>
-                            <th>Data</th>
-                            <th>Solicitante</th>
-                            <th>O que pesquisar?</th>
+                            <th style="width: 100px;">Data</th>
+                            <th style="width: 20%;">Solicitante</th>
+                            <th style="width: 30%;">O que pesquisar?</th>
                             <th>Período</th>
-                            <th>WhatsApp</th>
+                            <th>Contato</th>
                             <th>Status</th>
                             <th>Resp.</th>
-                            <th class="text-end">Ações</th>
+                            <th class="text-end" style="width: 160px;">Ação</th>
                         </tr>
                     </thead>
                     <tbody id="tabelaPedidos">
-                        <tr><td colspan="8" class="text-center p-5"><div class="spinner-border text-primary"></div><br>Carregando...</td></tr>
+                        <tr><td colspan="8" class="text-center p-5"><div class="spinner-border text-primary"></div><br>Carregando dados...</td></tr>
                     </tbody>
                 </table>
             </div>
             
-            <div class="pagination-container bg-white p-3 rounded shadow-sm d-flex justify-content-between align-items-center mt-3">
-                <span class="text-muted small">Pág <span id="paginaAtual">1</span></span>
+            <div class="pagination-container bg-white p-3 rounded shadow-sm d-flex justify-content-between align-items-center mt-3 mb-5">
+                <span class="text-muted small">Página <span id="paginaAtual" class="fw-bold">1</span></span>
                 <div>
-                    <button class="btn btn-sm btn-outline-secondary me-1" onclick="mudarPagina(-1)">Ant.</button>
-                    <button class="btn btn-sm btn-outline-primary" onclick="mudarPagina(1)">Prox.</button>
+                    <button class="btn btn-sm btn-outline-secondary me-1" onclick="mudarPagina(-1)"><i class="bi bi-chevron-left"></i> Ant.</button>
+                    <button class="btn btn-sm btn-outline-primary" onclick="mudarPagina(1)">Prox. <i class="bi bi-chevron-right"></i></button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL -->
+    <!-- Modais -->
     <div class="modal fade" id="modalAtendimento" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Atender Pedido</h5>
+                    <h5 class="modal-title">Finalizar Atendimento</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <input type="hidden" id="editId">
                     <div class="mb-3">
-                        <label class="fw-bold small text-muted">NOVO STATUS</label>
+                        <label class="fw-bold small text-muted">STATUS</label>
                         <select id="editStatus" class="form-select form-select-lg">
-                            <option value="ATENDIDO">✅ ATENDIDO</option>
+                            <option value="ATENDIDO">✅ PEDIDO ATENDIDO</option>
                             <option value="NÃO ENCONTRADO">❌ NÃO ENCONTRADO</option>
-                            <option value="EM ANÁLISE">⚠️ Devolver para Fila</option>
+                            <option value="EM ANÁLISE">⚠️ DEVOLVER PARA ANÁLISE</option>
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="fw-bold small text-muted">OBSERVAÇÃO</label>
+                        <label class="fw-bold small text-muted">OBSERVAÇÃO DO TÉCNICO</label>
                         <textarea id="editRetorno" class="form-control" rows="3"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Fechar</button>
-                    <button type="button" class="btn btn-success" onclick="salvarAlteracao()">Salvar</button>
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary px-4" onclick="salvarAlteracao()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalNovoPedido" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title"><i class="bi bi-plus-circle"></i> Novo Pedido</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formNovoPedido">
+                        <div class="mb-3">
+                            <label class="fw-bold small text-muted">SOLICITANTE</label>
+                            <input type="text" id="novoSolicitante" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold small text-muted">O QUE PESQUISAR?</label>
+                            <input type="text" id="novoPesquisa" class="form-control" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-6 mb-3">
+                                <label class="fw-bold small text-muted">PERÍODO</label>
+                                <input type="text" id="novoPeriodo" class="form-control" required>
+                            </div>
+                            <div class="col-6 mb-3">
+                                <label class="fw-bold small text-muted">WHATSAPP</label>
+                                <input type="text" id="novoZap" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-bold small text-muted">OBSERVAÇÕES</label>
+                            <textarea id="novoObs" class="form-control" rows="2"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success px-4" onclick="salvarNovoPedido()">Cadastrar</button>
                 </div>
             </div>
         </div>
@@ -203,35 +223,100 @@
 
         const usuarioLogado = localStorage.getItem('nio_usuario');
         if (!usuarioLogado) window.location.href = 'login.html';
-        document.getElementById('nomeUsuario').innerText = usuarioLogado;
+        document.getElementById('nomeUsuario').innerText = usuarioLogado.split(' ')[0];
+        
         function sair() { localStorage.clear(); window.location.href = 'login.html'; }
+        
+        $(document).ready(function(){ $('#novoZap').mask('(00) 00000-0000'); });
 
-        async function carregarPedidos() {
-            const tbody = document.getElementById('tabelaPedidos');
-            try {
-                const response = await fetch(URL_API + '?acao=listar_pedidos');
-                const data = await response.json();
-                if (data.result === 'success') {
-                    dadosGlobais = data.pedidos;
-                    atualizarContadores(dadosGlobais);
-                    aplicarFiltros();
-                } else alert('Erro ao carregar.');
-            } catch (error) {
-                console.error(error);
-                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Erro de conexão.</td></tr>';
+        function copiarTexto(texto, btn) {
+            navigator.clipboard.writeText(texto).then(() => {
+                const htmlOrig = btn.innerHTML;
+                btn.innerHTML = '<i class="bi bi-check-lg"></i>';
+                btn.classList.replace('btn-light', 'btn-success');
+                btn.classList.replace('text-secondary', 'text-white');
+                setTimeout(() => {
+                    btn.innerHTML = htmlOrig;
+                    btn.classList.replace('btn-success', 'btn-light');
+                    btn.classList.replace('text-white', 'text-secondary');
+                }, 1500);
+            }).catch(() => alert('Erro ao copiar.'));
+        }
+
+        async function confirmarExclusao(id) {
+            if (confirm("⚠️ TEM CERTEZA?\nIsso apagará o registro permanentemente.")) {
+                const btn = document.querySelector(`button[onclick="confirmarExclusao('${id}')"]`);
+                if(btn) btn.closest('tr').style.opacity = '0.3';
+
+                try {
+                    await fetch(URL_API, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ acao: 'excluir_pedido', id: id }) });
+                    
+                    const cacheLocal = localStorage.getItem('nio_pedidos_cache');
+                    if(cacheLocal) {
+                        let dados = JSON.parse(cacheLocal);
+                        dados = dados.filter(item => item[0].toString() !== id.toString());
+                        localStorage.setItem('nio_pedidos_cache', JSON.stringify(dados));
+                        dadosGlobais = dados;
+                        atualizarContadores(dadosGlobais);
+                        aplicarFiltros();
+                    } else { carregarPedidos(); }
+                } catch (e) { alert('Erro ao excluir.'); if(btn) btn.closest('tr').style.opacity = '1'; }
             }
         }
 
-        function filtrarPorCard(status) {
-            document.getElementById('filtroStatus').value = status;
-            aplicarFiltros();
+        async function carregarPedidos() {
+            const tbody = document.getElementById('tabelaPedidos');
+            const statusDiv = document.getElementById('statusAuto');
+            
+            const cacheLocal = localStorage.getItem('nio_pedidos_cache');
+            let carregouCache = false;
+
+            if (cacheLocal) {
+                try {
+                    const dadosCache = JSON.parse(cacheLocal);
+                    if(dadosCache.length > 0) {
+                        dadosGlobais = dadosCache;
+                        atualizarContadores(dadosGlobais);
+                        aplicarFiltros();
+                        carregouCache = true;
+                    }
+                } catch (e) { localStorage.removeItem('nio_pedidos_cache'); }
+            }
+
+            if (!carregouCache) tbody.innerHTML = '<tr><td colspan="8" class="text-center p-5"><div class="spinner-border text-primary"></div><br>Buscando dados...</td></tr>';
+            statusDiv.innerHTML = '<span class="spinner-grow spinner-grow-sm text-success"></span> Atualizando...';
+
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 15000);
+
+            try {
+                const response = await fetch(URL_API + '?acao=listar_pedidos', { signal: controller.signal });
+                const data = await response.json();
+                
+                if (data.result === 'success') {
+                    const dadosNovosString = JSON.stringify(data.pedidos);
+                    if (dadosNovosString !== cacheLocal) {
+                        dadosGlobais = data.pedidos;
+                        localStorage.setItem('nio_pedidos_cache', dadosNovosString);
+                        atualizarContadores(dadosGlobais);
+                        aplicarFiltros();
+                    }
+                    statusDiv.innerText = 'Atualização automática ativa';
+                }
+            } catch (error) {
+                console.error("Erro rede:", error);
+                statusDiv.innerText = 'Offline - Verificando conexão...';
+                if (!carregouCache) tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger p-4"><i class="bi bi-wifi-off fs-1"></i><br>Erro de conexão.</td></tr>';
+            } finally { clearTimeout(timeoutId); }
         }
+
+        function filtrarPorCard(status) { document.getElementById('filtroStatus').value = status; aplicarFiltros(); }
 
         function aplicarFiltros() {
             const termo = document.getElementById('inputPesquisa').value.toLowerCase();
             const status = document.getElementById('filtroStatus').value;
             dadosFiltrados = dadosGlobais.filter(p => {
-                const matchTexto = String(p[2]).toLowerCase().includes(termo) || String(p[3]).toLowerCase().includes(termo);
+                const matchTexto = String(p[2]).toLowerCase().includes(termo) || String(p[3]).toLowerCase().includes(termo) || String(p[4]).includes(termo);
                 const matchStatus = status === 'TODOS' || p[6] === status;
                 return matchTexto && matchStatus;
             });
@@ -242,41 +327,51 @@
         function renderizarTabela() {
             const tbody = document.getElementById('tabelaPedidos');
             tbody.innerHTML = '';
+            
+            if(dadosFiltrados.length === 0) { tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted p-5 fs-5">Nenhum pedido encontrado.</td></tr>'; return; }
+
             const inicio = (paginaAtual - 1) * itensPorPagina;
             const fim = inicio + itensPorPagina;
             const paginaDados = dadosFiltrados.slice(inicio, fim);
-            
             document.getElementById('paginaAtual').innerText = paginaAtual;
-            
-            if(paginaDados.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted p-4">Nenhum pedido encontrado.</td></tr>';
-                return;
-            }
 
             paginaDados.forEach(p => {
-                let badge = p[6] === 'EM ANÁLISE' ? 'bg-warning text-dark' : (p[6] === 'ATENDIDO' ? 'bg-success' : 'bg-danger');
+                let badgeClass = 'bg-secondary';
+                if(p[6] === 'EM ANÁLISE') badgeClass = 'bg-warning text-dark';
+                else if(p[6] === 'ATENDIDO') badgeClass = 'bg-success';
+                else if(p[6] === 'NÃO ENCONTRADO') badgeClass = 'bg-danger';
+
                 let zap = p[5] ? `https://wa.me/55${p[5].toString().replace(/\D/g,'')}` : '#';
-                
-                let tr = `<tr>
-                    <td data-label="Data"><small>${p[1]}</small></td>
+                let textoPesquisa = p[3] || "";
+                let textoSafe = textoPesquisa.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+                tbody.innerHTML += `<tr>
+                    <td data-label="Data" class="text-muted small">${p[1]}</td>
                     <td data-label="Solicitante" class="fw-bold text-primary">${p[2]}</td>
-                    <td data-label="Pesquisa"><span class="text-truncate d-block" style="max-width:200px">${p[3]}</span></td>
+                    <td data-label="Pesquisa">
+                        <div class="d-flex align-items-start justify-content-between bg-light p-2 rounded btn-copy-wrapper">
+                            <span class="text-wrap me-2" style="word-break: break-word;">${textoPesquisa}</span>
+                            <button class="btn btn-light btn-sm text-secondary border shadow-sm" onclick="copiarTexto('${textoSafe}', this)" title="Copiar"><i class="bi bi-clipboard"></i></button>
+                        </div>
+                    </td>
                     <td data-label="Período">${p[4]}</td>
-                    <td data-label="Contato"><a href="${zap}" target="_blank" class="btn btn-outline-success btn-sm border-0"><i class="bi bi-whatsapp"></i></a></td>
-                    <td data-label="Status"><span class="badge ${badge}">${p[6]}</span></td>
-                    <td data-label="Resp."><small>${p[7]}</small></td>
-                    <td data-label="Ações" class="text-end"><button class="btn btn-primary btn-sm" onclick="abrirModal('${p[0]}','${p[6]}')">Atender</button></td>
+                    <td data-label="Contato"><a href="${zap}" target="_blank" class="btn btn-outline-success btn-sm border-0 rounded-circle"><i class="bi bi-whatsapp"></i></a></td>
+                    <td data-label="Status"><span class="badge ${badgeClass} rounded-pill">${p[6]}</span></td>
+                    <td data-label="Resp."><small class="text-secondary">${p[7]}</small></td>
+                    <td data-label="Ação" class="text-end">
+                        <div class="d-flex justify-content-end gap-2">
+                            <button class="btn btn-outline-danger btn-sm rounded-pill px-2" onclick="confirmarExclusao('${p[0]}')" title="Excluir"><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-primary btn-sm rounded-pill px-3" onclick="abrirModal('${p[0]}','${p[6]}')">Atender</button>
+                        </div>
+                    </td>
                 </tr>`;
-                tbody.innerHTML += tr;
             });
         }
 
         function mudarPagina(d) {
             const total = Math.ceil(dadosFiltrados.length / itensPorPagina);
-            if (paginaAtual + d >= 1 && paginaAtual + d <= total) {
-                paginaAtual += d;
-                renderizarTabela();
-            }
+            const nova = paginaAtual + d;
+            if (nova >= 1 && nova <= total) { paginaAtual = nova; renderizarTabela(); if(window.innerWidth < 992) document.getElementById('containerLista').scrollIntoView({behavior: 'smooth'}); }
         }
 
         function atualizarContadores(lista) {
@@ -286,30 +381,28 @@
             document.getElementById('totalNaoEnc').innerText = lista.filter(p => p[6] === 'NÃO ENCONTRADO').length;
         }
 
-        const modal = new bootstrap.Modal(document.getElementById('modalAtendimento'));
-        function abrirModal(id, st) {
-            document.getElementById('editId').value = id;
-            document.getElementById('editStatus').value = st;
-            modal.show();
-        }
+        const modalAtendimento = new bootstrap.Modal(document.getElementById('modalAtendimento'));
+        function abrirModal(id, st) { document.getElementById('editId').value = id; document.getElementById('editStatus').value = st; document.getElementById('editRetorno').value = ''; modalAtendimento.show(); }
 
         async function salvarAlteracao() {
-            const id = document.getElementById('editId').value;
-            const st = document.getElementById('editStatus').value;
-            const ret = document.getElementById('editRetorno').value;
-            const resp = localStorage.getItem('nio_usuario');
-            
-            try {
-                await fetch(URL_API, {
-                    method: 'POST', mode: 'no-cors',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({acao: 'atualizar_pedido', id: id, status: st, retorno: ret, responsavel: resp})
-                });
-                alert('Salvo!'); modal.hide(); carregarPedidos();
-            } catch(e) { alert('Erro ao salvar.'); }
+            const id = document.getElementById('editId').value, st = document.getElementById('editStatus').value, ret = document.getElementById('editRetorno').value, resp = localStorage.getItem('nio_usuario');
+            const btn = document.querySelector('#modalAtendimento .btn-primary'), txtOrig = btn.innerText;
+            btn.innerText = 'Salvando...'; btn.disabled = true;
+            try { await fetch(URL_API, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({acao: 'atualizar_pedido', id: id, status: st, retorno: ret, responsavel: resp}) }); alert('Atualizado!'); modalAtendimento.hide(); carregarPedidos(); } catch(e) { alert('Erro.'); } finally { btn.innerText = txtOrig; btn.disabled = false; }
         }
 
-        window.onload = carregarPedidos;
+        const modalNovo = new bootstrap.Modal(document.getElementById('modalNovoPedido'));
+        function abrirModalNovo() { document.getElementById('formNovoPedido').reset(); modalNovo.show(); }
+
+        async function salvarNovoPedido() {
+            const form = { acao: 'novo_pedido', solicitante: document.getElementById('novoSolicitante').value, nome_pesquisado: document.getElementById('novoPesquisa').value, periodo: document.getElementById('novoPeriodo').value, whatsapp: document.getElementById('novoZap').value, observacoes: document.getElementById('novoObs').value, responsavel: localStorage.getItem('nio_usuario') };
+            if(!form.solicitante) return alert('Preencha os campos.');
+            const btn = document.querySelector('#modalNovoPedido .btn-success'), txtOrig = btn.innerText;
+            btn.innerText = 'Enviando...'; btn.disabled = true;
+            try { await fetch(URL_API, { method: 'POST', mode: 'no-cors', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(form) }); alert('Cadastrado!'); modalNovo.hide(); carregarPedidos(); } catch(e) { alert('Erro.'); } finally { btn.innerText = txtOrig; btn.disabled = false; }
+        }
+
+        window.onload = function() { carregarPedidos(); setInterval(() => carregarPedidos(), 30000); };
     </script>
 </body>
 </html>
